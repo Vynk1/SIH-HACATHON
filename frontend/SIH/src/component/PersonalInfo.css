@@ -1,0 +1,83 @@
+.personal-info-container {
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(180deg, #0f2027 0%, #357e9e 57.93%, #478093 90.62%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.form-box {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 40px;
+  border-radius: 12px;
+  width: 500px;
+  color: white;
+  text-align: center;
+}
+
+.form-box h2 {
+  margin-bottom: 30px;
+  font-size: 24px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  border-bottom: px solid #fff;
+  margin: 15px ;
+  margin-bottom: 0px;
+  padding: 5px 0;
+}
+
+.input-image {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+  margin-bottom: -0px;
+  background-color: transparent;
+}
+
+.input-group input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  color: #fff;
+  font-size: 16px;
+  padding: 1px ;      
+  line-height: 2.2;
+}
+
+.field-text{
+  margin-bottom: 10px;
+}
+
+.input-group input::placeholder {
+  color: #fff;
+  opacity: 0.8;
+}
+
+.submit-btn {
+  background: #4a9ee2;
+  border: none;
+  color: white;
+  font-size: 16px;
+  padding: 12px;
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.submit-btn:hover {
+  background: #357bbd;
+}
+
+.phone-left img {
+  width: 300px;
+  max-width: 100%;
+}
