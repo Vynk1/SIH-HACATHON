@@ -1,3 +1,0 @@
-teammate setup run the code below in bash
-chmod +x setup.sh   # give execute permission (first time only)
-./setup.sh          # run the script
