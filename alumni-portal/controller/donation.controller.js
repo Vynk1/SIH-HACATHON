@@ -1,4 +1,4 @@
-const Donation = require("../models/Donation");
+const Donation = require("../model/donation.model");
 
 // middleware first check if user is alumni or not
 exports.postDonation = async (req, res) => {

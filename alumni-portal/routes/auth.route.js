@@ -4,7 +4,7 @@ const authRouter = express.Router();
 
 //internal module
 const authController = require("../controller/auth.controller");
-const auth = require("../middleware/auth");
+const auth = require("../middleware/auth.middleware");
 
 //  * POST /auth/register
 //  * body: { full_name, email, password, role, phone_number? }

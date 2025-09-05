@@ -1,7 +1,7 @@
 const express = require("express");
 
 const alumniController = require("../controller/alumni.controller")
-const auth = require("../middleware/auth");
+const auth = require("../middleware/auth.middleware");
 
 const alumniRouter = express.Router();
 

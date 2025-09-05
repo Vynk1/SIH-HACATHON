@@ -1,10 +1,10 @@
 //external modules
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const { validationResult, check } = require("express-validator");
 const jwt = require("jsonwebtoken");
 
 //internal modules
-const User = require("../models/User");
+const User = require("../model/user.model");
 
 exports.postRegister = [
   check("full_name")

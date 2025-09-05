@@ -1,4 +1,4 @@
-const Mentorship = require("../models/Mentorship");
+const Mentorship = require("../model/mentorship.model");
 
 //by student to alumni
 exports.postMentoring = async (req, res) => {

@@ -1,7 +1,7 @@
 const express = require("express");
 
 const mentorController = require("../controller/mentorship.controller");
-const auth = require("../middleware/auth");
+const auth = require("../middleware/auth.middleware");
 const mentorRouter = express.Router();
 
 //  * POST /mentorships/request

@@ -1,4 +1,4 @@
-const AdminProfile = require("../models/AdminProfile");
+const AdminProfile = require("../model/adminProfile.model");
 
 exports.getAdminProfile = async (req, res) => {
   try {
