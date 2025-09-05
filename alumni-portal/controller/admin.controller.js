@@ -29,7 +29,7 @@ exports.postAdminProfile = async (req, res) => {
     };
 
     const profile = await AdminProfile.findOneAndUpdate(
-      { user_id: req.user._id },
+      { _id: req.user._id },
       { $set: { user_id: req.user._id, ...update } }, //update and if not present than create a new one document in db
       { new: true, upsert: true }
     ).lean();

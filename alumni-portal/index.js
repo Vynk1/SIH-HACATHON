@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 //internal modules
 const authRouter = require("./routes/auth.route");
@@ -16,6 +17,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser())
+app.use(express.urlencoded({ extended: true }));
 
 // health
 app.get("/", (_req, res) => res.send("API running"));

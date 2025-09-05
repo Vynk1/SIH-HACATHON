@@ -10,7 +10,7 @@ const adminProfileSchema = new mongoose.Schema({
   position: { type: String, required: true }, 
 
   department: { type: String }, 
-  responsibilities: { type: String }, // free text
+  responsibilities: [{ type: String }], // free text
   permissions: [{ type: String }], // e.g., ["manage_events", "approve_donations"]
   updated_at: { type: Date, default: Date.now },
 });

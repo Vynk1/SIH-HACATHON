@@ -40,35 +40,11 @@ exports.postRegister = [
         phone_number,
       });
 
-      // Assigning JWT
-      const token = jwt.sign(
-        {
-          _id: user._id.toString(),
-          role: user.role,
-          full_name: user.full_name,
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: "7d" },
-        (err) => {
-          if (err) {
-            console.error("Error signing JWT:", err);
-            return res.status(500).json({
-              message: "Internal server error",
-              error: err.message,
-            });
-          }
-        }
-      );
-
-      res.status(201).json({
-        token,
-        user: {
-          _id: user._id,
-          full_name: user.full_name,
-          email: user.email,
-          role: user.role,
-        },
-      });
+      if (user) {
+        res.status(201).json({
+          msg: "user Registered successfully",
+        });
+      }
     } catch (err) {
       console.error("REGISTER_ERROR", err);
       res.status(500).json({ message: "Server error" });
@@ -94,7 +70,7 @@ exports.postLogin = async (req, res) => {
       { _id: user._id.toString(), role: user.role, full_name: user.full_name },
       process.env.JWT_SECRET,
       { expiresIn: "7d" },
-      (err) => {
+      (err, token) => {
         if (err) {
           console.error("Error signing JWT:", err);
           return res.status(500).json({
@@ -102,18 +78,17 @@ exports.postLogin = async (req, res) => {
             error: err.message,
           });
         }
+        res.cookie("token", token, { httpOnly: true });
+        res.json({
+          user: {
+            _id: user._id,
+            full_name: user.full_name,
+            email: user.email,
+            role: user.role,
+          },
+        });
       }
     );
-
-    res.json({
-      token,
-      user: {
-        _id: user._id,
-        full_name: user.full_name,
-        email: user.email,
-        role: user.role,
-      },
-    });
   } catch (err) {
     console.error("LOGIN_ERROR", err);
     res.status(500).json({ message: "Server error" });
@@ -134,5 +109,6 @@ exports.getUserProfile = async (req, res) => {
 
 // for the timing we will handle logout part from frontend -> not forcefull logout...
 exports.postLogout = (req, res) => {
+  res.clearCookie("token");
   res.json({ message: "Logged out successfully" });
-}
+};

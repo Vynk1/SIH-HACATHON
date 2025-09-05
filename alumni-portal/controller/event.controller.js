@@ -10,7 +10,7 @@ exports.postEvent = async (req, res) => {
       venue,
       created_by: req.user._id,
     });
-    res.status(201).json(event);
+    res.status(201).json({msg: "Event created successfully"});
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
