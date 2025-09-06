@@ -1,30 +1,20 @@
 import React from "react";
 
+// Import team member images
+import vinayakImg from "../assets/vinayak.jpeg";
+import vanshImg from "../assets/vansh.jpeg";
+import navyaImg from "../assets/navya.jpeg";
+import namanImg from "../assets/naman.jpeg";
+import arshdeepImg from "../assets/arshdeep.jpeg";
+import deepanshuImg from "../assets/deepanshu.jpeg";
+
 const teamMembers = [
-  {
-    name: "Vinayak Gupta",
-    img: "https://randomuser.me/api/portraits/men/32.jpg",
-  },
-  {
-    name: "Vansh Bansal",
-    img: "https://randomuser.me/api/portraits/men/40.jpg",
-  },
-  {
-    name: "Navya Gupta",
-    img: "https://randomuser.me/api/portraits/women/45.jpg",
-  },
-  {
-    name: "Naman Chopra",
-    img: "https://randomuser.me/api/portraits/men/50.jpg",
-  },
-  {
-    name: "Arshdeep Singh",
-    img: "https://randomuser.me/api/portraits/men/65.jpg",
-  },
-  {
-    name: "Deepanshu Jaiswal",
-    img: "https://randomuser.me/api/portraits/men/70.jpg",
-  },
+  { name: "Vinayak Gupta", img: vinayakImg },
+  { name: "Vansh Bansal", img: vanshImg },
+  { name: "Navya Gupta", img: navyaImg },
+  { name: "Naman Chopra", img: namanImg },
+  { name: "Arshdeep Singh", img: arshdeepImg },
+  { name: "Deepanshu Jaiswal", img: deepanshuImg },
 ];
 
 const TeamSection = () => {

@@ -10,45 +10,45 @@ import event6 from "../assets/event6.jpeg";
 
 const events = [
   {
-    title: "Networking Mixer",
-    venue: "Olive Bar & Kitchen, Mehrauli",
-    date: "18th October 2025",
+    title: "Induction Programme 2025",
+    venue: "MAIT",
+    date: "1st August 2025",
     time: "7:00 PM – 10:30 PM",
     image: event1,
   },
   {
-    title: "Golf Tournament",
-    venue: "DLF Golf & Country Club, Gurgaon",
-    date: "23rd November 2025",
+    title: "Hindi Newspaper Feature",
+    venue: "MAIT",
+    date: "23rd June 2025",
     time: "8:00 AM – 1:00 PM",
     image: event2,
   },
   {
-    title: "Homecoming Celebration",
-    venue: "India Habitat Centre, Lodhi Road",
-    date: "2nd November 2025",
+    title: "Book Fair 2025",
+    venue: "MAIT",
+    date: "2nd July 2025",
     time: "3:00 PM – 8:00 PM",
     image: event3,
   },
   {
-    title: "Alumni Panel",
-    venue: "Auditorium, Delhi Campus",
-    date: "12th December 2025",
-    time: "11:00 AM – 1:00 PM",
+    title: "International Yoga Day",
+    venue: "MAIT",
+    date: "21st June 2025",
+    time: "9:00 AM – 11:00 AM",
     image: event4,
   },
   {
-    title: "Alumni Career Fair",
-    venue: "Convention Hall, Gurugram",
-    date: "20th January 2026",
-    time: "10:00 AM – 5:00 PM",
+    title: "Spiritual Talk Event",
+    venue: "MAIT Auditorium",
+    date: "12th July 2025",
+    time: "6:00 PM – 9:00 PM",
     image: event5,
   },
   {
-    title: "Volunteer Day",
-    venue: "Community Centre, Delhi",
-    date: "15th February 2026",
-    time: "9:00 AM – 2:00 PM",
+    title: "Alumni Interaction",
+    venue: "Board Room, MAIT",
+    date: "30th July 2025",
+    time: "11:00 AM – 1:00 PM",
     image: event6,
   },
 ];
@@ -57,17 +57,23 @@ const Event = () => {
   return (
     <section className="p-6 md:p-12 bg-gray-50 min-h-screen">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-        <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-10">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 relative inline-block">
           Event Management Section
+          <span className="block w-16 h-1 bg-indigo-500 mt-2 rounded-full"></span>
         </h2>
-        <button className="mt-4 md:mt-0 bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2 rounded-lg shadow-md transition">
+
+        <button className="mt-4 md:mt-0 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg shadow-md transition duration-300">
           + New Event
         </button>
       </div>
 
-      {/* All Events */}
-      <h3 className="text-xl font-semibold text-gray-700 mb-6">All Events</h3>
+      {/* Subheading */}
+      <h3 className="text-2xl font-semibold text-gray-700 mb-6">
+        All Events
+      </h3>
+
+      {/* Event Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {events.map((event, index) => (
           <div
