@@ -22,8 +22,8 @@ const Profile = () => {
       <main className="main-content">
         <header className="header">
           <div>
-            <h2>Welcome, John</h2>
-            <p>Tue, 07 June 2022</p>
+            <h2 className="welcome">Welcome, John</h2>
+            <p className="date">Tue, 07 June 2022</p>
           </div>
           <div className="search-box">
             <img src={searchIcon} alt="search" />
@@ -35,7 +35,7 @@ const Profile = () => {
         <section className="profile-section">
           <div className="user-info">
             <img src={avatar} alt="John" className="user-avatar" />
-            <div>
+            <div className="john-info">
               <h3>John</h3>
               <p>john@gmail.com</p>
             </div>
@@ -44,27 +44,27 @@ const Profile = () => {
 
           <div className="form-grid">
             <div className="form-group">
-              <label>Full Name</label>
+              <label className="field">Full Name</label>
               <input type="text" placeholder="Enter name" />
             </div>
             <div className="form-group">
-              <label>Degree</label>
+              <label className="field">Degree</label>
               <input type="text" placeholder="Your degree" />
             </div>
             <div className="form-group">
-              <label>Email</label>
+              <label className="field">Email</label>
               <input type="text" placeholder="Your email" />
             </div>
             <div className="form-group">
-              <label>Contact</label>
+              <label className="field">Contact</label>
               <input type="text" placeholder="Your number" />
             </div>
             <div className="form-group">
-              <label>Batch</label>
+              <label className="field">Batch</label>
               <input type="text" placeholder="Your batch" />
             </div>
             <div className="form-group">
-              <label>Time Zone</label>
+              <label className="field">Time Zone</label>
               <input type="text" placeholder="Time Zone" />
             </div>
           </div>

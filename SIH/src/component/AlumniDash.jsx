@@ -6,7 +6,7 @@ import image4 from "../assets/image4.jpeg";  // Placeholder chart
 
 const AlumniDashboard = () => (
   <div className="alumni-dashboard">
-    <aside className="sidebar">
+    <aside className="side-bar">
       <img src={search2.png} alt="Search-icon" className="search-icon"/>
       <input
        type="text" 

@@ -3,13 +3,17 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AdminDash from "./component/AdminDash";
 import AlumniDash from "./component/AlumniDash";
 import Login from "./component/Login";
+//import HeroSection from "./component/HeroSection";
+//import MainContent from "./component/MainContent";
 import CreateAccount from "./component/CreateAccount";
 import PersonalInfo from "./component/PersonalInfo";
 import Profile from "./component/Profile";
+import HeroSection from "./component/HeroSection";
 
 function App() {
   return (
-    <Profile />
+     //<AdminDash />
+     <HeroSection/>
     // <Router>
     //   <Routes>
     //     <Route path="/" element={<Login />} />

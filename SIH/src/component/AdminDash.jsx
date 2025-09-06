@@ -29,7 +29,7 @@ const alumni = [
 
 const AdminDashboard = () => (
   <div className="admin-dashboard">
-    <aside className="sidebar">
+    <aside className="side_bar">
       <div className="search">
         <img src={search.png} alt="Search-icon" className="search-icon"/>
         Search for…
