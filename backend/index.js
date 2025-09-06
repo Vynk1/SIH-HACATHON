@@ -20,6 +20,19 @@ app.use(express.json());
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
 
+require("dotenv").config();
+
+const requiredEnv = ["PORT", "MONGO_URI", "JWT_SECRET", "MONGO_DB"];
+
+requiredEnv.forEach((key) => {
+  if (process.env[key]) {
+    console.log(`✅ ${key} is set`);
+  } else {
+    console.error(`❌ ${key} is NOT set`);
+  }
+});
+
+
 // health
 app.get("/", (_req, res) => res.send("API running"));
 
