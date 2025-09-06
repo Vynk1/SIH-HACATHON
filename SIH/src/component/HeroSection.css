@@ -70,14 +70,15 @@
   flex-direction: column;
   align-items: center;
   gap: 30px;
-  padding-top: 60px; /* give space below fixed navbar */
+  margin-top: 500px;
+  padding-top: 100px; /* give space below fixed navbar */
 }
 
 /* Title styling */
 .hero-content h1 {
-  font-size: 3rem;
+  font-size: 4rem;
   font-weight: 600;
-  margin: 0;
+  margin: 0px;
 }
 
 /* Button positioned lower */
@@ -91,7 +92,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 80px; /* pushes button lower */
+  margin-top: 10px; /* pushes button lower */
 }
 
 .get-started-btn:hover {
