@@ -16,6 +16,12 @@ const mentorRouter = require("./routes/mentor.route");
 const app = express();
 
 app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173", "https://your-frontend-domain.com"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
