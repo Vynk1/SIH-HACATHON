@@ -1,9 +1,11 @@
-import React from "react";
 import Globe from "../assets/logo.png";
 import google from "../assets/google.png";
 import { Link } from "react-router-dom"; // Optional if using React Router
+import { useState } from "react";
 
 function Login() {
+  const {isLoggedIn, setIsLoggedIn} = useState(false);
+
   return (
     <div className="flex flex-col md:flex-row min-h-screen w-full bg-gradient-to-b from-[#0F2027] via-[#357E9E] to-[#478093] text-white font-[Poppins]">
       
@@ -43,16 +45,17 @@ function Login() {
             className="w-full md:w-[380px] p-3 rounded-xl mb-5 text-black text-[15px] shadow-md focus:outline-none border border-transparent hover:border-white transition"
           />
 
-          {/* Options */}
+          {/* Options
           <div className="flex flex-col sm:flex-row justify-between items-center w-full md:w-[380px] text-[14px] mb-5 gap-2 sm:gap-0">
             <label className="flex items-center gap-2">
               <input type="checkbox" className="accent-[#4A9EE2]" /> Remember me
             </label>
             <a href="#" className="text-[#4A9EE2] hover:underline">Forgot password?</a>
-          </div>
+          </div> */}
 
           {/* Sign In Button */}
           <Link 
+            onClick={() => setIsLoggedIn(true)}
             to="/CreateAccount" 
             className="w-full md:w-[380px] text-center bg-[#4A9EE2] text-white py-3 rounded-xl font-medium mb-4 shadow-md hover:opacity-90 transition"
           >

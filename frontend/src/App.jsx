@@ -7,6 +7,8 @@ import CreateAccount from "./pages/CreateAccount";
 import Profile from "./pages/Profile";
 import EnterCode from "./pages/EnterCode";
 import LandingPage from "./pages/LandingPage";
+import Donation from "./pages/Donation"
+import Events from "./pages/Events"
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path="/alumnidash" element={<AlumniDash />} />
         <Route path="/adminDash" element={<AdminDash />} />
         <Route path="/me" element={<Profile />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/donations" element={<Donation />} />
       </Routes>
     </Router>
   );
