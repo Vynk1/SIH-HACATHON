@@ -1,0 +1,100 @@
+.hero-wrapper {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  min-height: 100vh;
+  width: 100vw;
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  /* Use flex column to control vertical spacing */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dark overlay for readability */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+/* Navbar fixed to top */
+.hero-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: transparent; /* keeps background visible */
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+.hero-navbar ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-between; /* evenly distributes space */
+  width: 40%; /* adjust this width to control spacing */
+  padding: 0;
+  margin: 0;
+}
+
+.hero-navbar ul li {
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.hero-navbar ul li:hover {
+  color: #60a5fa;
+}
+
+/* Hero content centered vertically and horizontally */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  margin: auto 0 100px; /* center vertically with bottom margin for button */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-top: 500px;
+  padding-top: 100px; /* give space below fixed navbar */
+}
+
+/* Title styling */
+.hero-content h1 {
+  font-size: 4rem;
+  font-weight: 600;
+  margin: 0px;
+}
+
+/* Button positioned lower */
+.get-started-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px; /* pushes button lower */
+}
+
+.get-started-btn:hover {
+  background-color: #2563eb;
+}
