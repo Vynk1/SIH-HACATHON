@@ -11,11 +11,13 @@ import Profile from "./pages/Profile";
 import EnterCode from "./pages/EnterCode";
 import HeroSection from "./component/HeroSection";
 import LandingPage from "./pages/LandingPage";
+import Event from "./pages/Events";
+import Donation from "./pages/Donation";
 
 function App() {
   return (
      //<Profile />
-     <LandingPage/>
+     <Donation/>
     // <Router>
     //   <Routes>
     //     <Route path="/" element={<LandingPage />} />
