@@ -115,10 +115,11 @@ Event Management Page
 ### Arsh – UI/UX (Figma)
 ### Vansh – Java / Spring Boot + Backend Support
 ### Naman – Postman Testing + Docs & PPT
-
+### Deepanshu - Backend lead + frontend assist + Integration + Database
 # 📅 Smart India Hackathon 2025
 ### This project is developed as part of SIH 2025 under the problem statement:
 ### “A centralized alumni management platform for better engagement, mentorship, and fundraising.”
+
 
 
 
