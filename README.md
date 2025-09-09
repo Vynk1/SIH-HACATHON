@@ -83,19 +83,30 @@ Frontend runs at: http://localhost:3000
 # 📡 API Overview
 
  POST /api/auth/register – Register user
+ 
  GET /api/alumni/me – Get alumni profile
+ 
  POST /api/alumni/me – Update alumni profile
+ 
  GET /api/events – List events
+ 
  POST /api/events/:id/register – Register for event
+ 
  POST /api/mentorships/request – Request mentorship
+ 
  POST /api/donations – Make a donation
+ 
  👉 Full API contract available in docs/API.md.
 
 # 📸 Screenshots 
 Alumni Dashboard
+
 Student Dashboard
+
 Admin Dashboard
+
 Event Management Page
+
 
 # 👨‍💻 Contributors
 
@@ -108,6 +119,7 @@ Event Management Page
 # 📅 Smart India Hackathon 2025
 ### This project is developed as part of SIH 2025 under the problem statement:
 ### “A centralized alumni management platform for better engagement, mentorship, and fundraising.”
+
 
 
 
