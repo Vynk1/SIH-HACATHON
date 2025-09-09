@@ -68,27 +68,29 @@ frontend/
 ```bash
 git clone https://github.com/<your-username>/SIH-HACATHON.git
 cd SIH-HACATHON/frontend
-
-2. Install dependencies
+```
+### 2. Install dependencies
+```bash
 npm install
-
-3. Configure Environment
-
+```
+### 4. Configure Environment
+```bash
 Create a .env file in frontend/ with:
 
 VITE_BACKEND_URL=http://localhost:5000
-
+```
 
 Change VITE_BACKEND_URL to your deployed backend URL (e.g., https://alumni-connect-backend.onrender.com) when deploying.
 
-4. Run locally
+### 4. Run locally
+```bash
 npm run dev
-
+```
 
 Frontend will start at http://localhost:3000
 .
 
-🔗 API Integration
+## 🔗 API Integration
 
 The frontend interacts with the backend at:
 
@@ -106,24 +108,25 @@ POST /api/donations – Make a donation
 
 👉 Make sure VITE_BACKEND_URL points to the correct backend.
 
-📦 Build for Production
+### 📦 Build for Production
+```bash
 npm run build
-
+```
 
 The optimized build will be in the dist/ folder.
 You can deploy this build to Vercel, Netlify, or any static hosting service.
 
-👨‍💻 Contributors (Frontend)
+# 👨‍💻 Contributors (Frontend)
 
-Navya – React.js, Components & UI
+### Navya – React.js, Components & UI
 
-Arsh – UI/UX (Figma)
+### Arsh – UI/UX (Figma)
 
-Vinayak – Integration with backend APIs
+### Vinayak – Integration with backend APIs
 
-Deepanshu – Backend support, API testing
+### Deepanshu – Backend Lead, API testing
 
-📅 Smart India Hackathon 2025
+## 📅 Smart India Hackathon 2025
 
 This project is part of SIH 2025 under the Alumni Engagement problem statement.
 Frontend is designed for fast, simple, and responsive user experience.
