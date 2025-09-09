@@ -62,67 +62,72 @@ SIH-HACATHON/
 ```bash
 git clone https://github.com/<your-username>/SIH-HACATHON.git
 cd SIH-HACATHON
-'''
+```
 2. Backend Setup
+```bash
 cd backend
 npm install
 cp .env.example .env   # add your keys
 npm start
+```
 Backend runs at: http://localhost:5000
 
 
 3. Frontend Setup
+```bash 
 cd frontend
 npm install
 npm run dev
+```
 Frontend runs at: http://localhost:3000
-📡 API Overview
+# 📡 API Overview
 
-POST /api/auth/register – Register user
+## POST /api/auth/register – Register user
 
-POST /api/auth/login – Login
+## GET /api/alumni/me – Get alumni profile
 
-GET /api/alumni/me – Get alumni profile
+## POST /api/alumni/me – Update alumni profile
 
-POST /api/alumni/me – Update alumni profile
+## GET /api/events – List events
 
-GET /api/events – List events
+## POST /api/events/:id/register – Register for event
 
-POST /api/events/:id/register – Register for event
+## POST /api/mentorships/request – Request mentorship
 
-POST /api/mentorships/request – Request mentorship
+## POST /api/donations – Make a donation
 
-POST /api/donations – Make a donation
+## 👉 Full API contract available in docs/API.md.
 
-👉 Full API contract available in docs/API.md.
+# 📸 Screenshots 
 
-📸 Screenshots 
+### Alumni Dashboard
 
-Alumni Dashboard
+### Student Dashboard
 
-Student Dashboard
+### Admin Dashboard
 
-Admin Dashboard
+### Event Management Page
 
-Event Management Page
+# 👨‍💻 Contributors
 
-👨‍💻 Contributors
+## Vinayak – Team Lead, Backend + Integration
 
-Vinayak – Team Lead, Backend + Integration
+## Navya – Frontend Developer
 
-Deepanshu – Backend Developer
+## Arsh – UI/UX (Figma)
 
-Navya – Frontend Developer
+## Vansh – Java / Spring Boot + Backend Support
 
-Arsh – UI/UX (Figma)
+## Naman – Postman Testing + Docs & PPT
 
-Vansh – Java / Spring Boot + Backend Support
+# 📅 Smart India Hackathon 2025
 
-Naman – Postman Testing + Docs & PPT
+### This project is developed as part of SIH 2025 under the problem statement:
 
-📅 Smart India Hackathon 2025
+### “A centralized alumni management platform for better engagement, mentorship, and fundraising.”
 
-This project is developed as part of SIH 2025 under the problem statement:
+### This project is developed as part of SIH 2025 under the problem statement:
 
 “A centralized alumni management platform for better engagement, mentorship, and fundraising.”
+
 
