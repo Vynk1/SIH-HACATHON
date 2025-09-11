@@ -1,6 +1,6 @@
 # API Testing Guide ✅
 
-This document contains all successful API test flows for the Alumni Portal project.  
+This document contains all successful API test flows for Alumni Connect.  
 Tested using **Postman**.
 
 ---
@@ -468,3 +468,4 @@ Tested using **Postman**.
 ![View Donations](screenshots/view_donations(admin).png)
 
 ---
+
