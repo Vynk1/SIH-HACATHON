@@ -70,7 +70,7 @@ npm install
 cp .env.example .env   # add your keys
 npm start
 ```
-Backend runs at: http://localhost:5000
+Backend runs at: https://alumnibackend-3wf3.onrender.com
 
 
 3. Frontend Setup
@@ -96,7 +96,7 @@ Frontend runs at: http://localhost:3000
  
  POST /api/donations – Make a donation
  
- 👉 Full API contract available in docs/API.md.
+ 👉 Full API contract available in ALUMINI-CONNECT/backend/docs/postman/demo-runbook.md
 
 # 📸 Screenshots 
 Alumni Dashboard
@@ -118,7 +118,8 @@ Event Management Page
 ### Deepanshu - Backend lead + frontend assist + Integration + Database
 # 📅 Smart India Hackathon 2025
 ### This project is developed as part of SIH 2025 under the problem statement:
-### “A centralized alumni management platform for better engagement, mentorship, and fundraising.”
+### “ SIH25017: A centralized alumni management platform for better engagement, mentorship, and fundraising.”
+
 
 
 
