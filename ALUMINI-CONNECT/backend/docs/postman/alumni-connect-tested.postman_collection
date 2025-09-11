@@ -1,0 +1,472 @@
+{
+	"info": {
+		"_postman_id": "151a5939-ee61-4c9f-9d80-d409f3bd923a",
+		"name": "alumni-portal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48286350",
+		"_collection_link": "https://chopranaman2006-3415469.postman.co/workspace/Naman-Chopra's-Workspace~8b01d1d9-9883-46b6-858e-9fc59ca17a1d/collection/48286350-151a5939-ee61-4c9f-9d80-d409f3bd923a?action=share&source=collection_link&creator=48286350"
+	},
+	"item": [
+		{
+			"name": "Alumni Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"alumni@example.com\",\n  \"password\": \"password123\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/alumni/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"alumni",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alumni Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"alumni@example.com\",\n  \"password\": \"password123\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/alumni/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"alumni",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Current User (/me)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/me",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password123\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/admin/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admin",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password123\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/admin/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admin",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin Profile (/admin/me)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/admin/me",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admin",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Event",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Hackathon 2025\",\n  \"date\": \"2025-09-20\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/events/create-event",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"events",
+						"create-event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Events",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/events/show-events",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"events",
+						"show-events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register for Event",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{student_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "{{base_url}}/events/:id/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"events",
+						":id",
+						"register"
+					],
+					"variable": [
+						{
+							"key": "id"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Donate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"amount\": 100,\n  \"message\": \"For alumni fund\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/donations/donate",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"donations",
+						"donate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "My Donations",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/donations/my",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"donations",
+						"my"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show All Donations",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/donations/show-donations",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"donations",
+						"show-donations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Student Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"student@example.com\",\n  \"password\": \"password123\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/students/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"students",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Student Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"student@example.com\",\n  \"password\": \"password123\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/students/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"students",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request Mentorship",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{student_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"mentorId\": \"mentor123\",\n  \"topic\": \"Career Guidance\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/mentorships/request",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"mentorships",
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mentorships as Mentor",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{mentor_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/mentorships/as-mentor",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"mentorships",
+						"as-mentor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Mentorship Status",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{mentor_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"status\": \"accepted\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/mentorships/:id/status",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"mentorships",
+						":id",
+						"status"
+					],
+					"variable": [
+						{
+							"key": "id"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
