@@ -99,13 +99,17 @@ Frontend runs at: http://localhost:3000
  👉 Full API contract available in ALUMINI-CONNECT/backend/docs/postman/demo-runbook.md
 
 # 📸 Screenshots 
-Alumni Dashboard
+- **Alumni Dashboard**  
+![Alumni Dashboard](frontend/frontend_pages/alumni_dashboard.png)
 
-Student Dashboard
+- **Student Dashboard**  
+![Student Dashboard](frontend/frontend_pages/student_dashboard.png)
 
-Admin Dashboard
+- **Admin Dashboard**  
+![Admin Dashboard](frontend/frontend_pages/admin_dashboard.png)
 
-Event Management Page
+- **Events Page**  
+![Events Page](frontend/frontend_pages/event_tab.png)
 
 
 # 👨‍💻 Contributors
@@ -119,6 +123,7 @@ Event Management Page
 # 📅 Smart India Hackathon 2025
 ### This project is developed as part of SIH 2025 under the problem statement:
 ### “ SIH25017: A centralized alumni management platform for better engagement, mentorship, and fundraising.”
+
 
 
 
