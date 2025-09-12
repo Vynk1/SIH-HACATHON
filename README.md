@@ -100,16 +100,16 @@ Frontend runs at: http://localhost:3000
 
 # 📸 Screenshots 
 - **Alumni Dashboard**  
-(![ALumni Dashboard](frontend/frontend_pages/alumni_dashboard.png)
+(![ALumni Dashboard](ALUMINI-CONNECT/frontend/frontend_pages/alumni_dashboard.png)
 
 - **Student Dashboard**  
-![Student Dashboard](frontend/frontend_pages/student_dashboard.png)
+![Student Dashboard](ALUMINI-CONNECT/frontend/frontend_pages/student_dashboard.png)
 
 - **Admin Dashboard**  
-![Admin Dashboard](frontend/frontend_pages/admin_dashboard.png)
+![Admin Dashboard](ALUMINI-CONNECT/frontend/frontend_pages/admin_dashboard.png)
 
 - **Events Page**  
-![Events Page](frontend/frontend_pages/event_tab.png)
+![Events Page](ALUMINI-CONNECT/frontend/frontend_pages/event_tab.png)
 
 
 # 👨‍💻 Contributors
@@ -123,6 +123,7 @@ Frontend runs at: http://localhost:3000
 # 📅 Smart India Hackathon 2025
 ### This project is developed as part of SIH 2025 under the problem statement:
 ### “ SIH25017: A centralized alumni management platform for better engagement, mentorship, and fundraising.”
+
 
 
 
