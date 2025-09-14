@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Footer from "../component/Footer";
 
 const Donation = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +19,8 @@ const Donation = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-gray-100 via-white to-gray-100 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-gray-100 via-white to-gray-100 px-4">
+      <div className="flex justify-center items-center min-h-screen">
       <div className="w-full max-w-md bg-[#d8def0] rounded-xl shadow-md p-8">
         <h2 className="text-2xl font-bold text-center text-black mb-6">Kindly fill the form</h2>
         
@@ -97,6 +99,8 @@ const Donation = () => {
           </div>
         </form>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 };

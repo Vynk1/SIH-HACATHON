@@ -21,9 +21,8 @@ const TeamSection = () => {
       className="flex flex-col items-center px-6 py-12 md:px-20 bg-white"
     >
       {/* Heading */}
-      <h2 className="text-3xl md:text-4xl font-semibold mb-10 text-center">
-        Meet Our Team
-      </h2>
+      <h2 className="text-3xl md:text-4xl font-semibold mb-2 text-center">Meet Our Team</h2>
+      <span className="block mx-auto w-24 h-1 bg-blue-400 rounded-full mb-10" aria-hidden="true"></span>
 
       {/* Team Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 max-w-6xl w-full">

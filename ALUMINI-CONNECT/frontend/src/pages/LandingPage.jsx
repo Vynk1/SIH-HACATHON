@@ -4,6 +4,7 @@ import AboutUs from "../component/AboutUs";
 //import Stats from '../component/Stats'
 import TestimonialsSection from "../component/Testimonials";
 import Team from "../component/OurTeam";
+import Footer from "../component/Footer";
 
 // import React from "react";
 import { FaGlobe } from "react-icons/fa";
@@ -20,6 +21,7 @@ const LandingPage = () => {
       {/* <Stats /> */}
       <TestimonialsSection />
       <Team />
+      <Footer />
     </>
   );
 };

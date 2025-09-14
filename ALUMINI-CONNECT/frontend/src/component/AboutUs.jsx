@@ -44,7 +44,8 @@ const AboutUs = () => {
       className="flex flex-col items-center text-center px-6 py-12 md:px-20 bg-white"
     >
       {/* About Us Heading */}
-      <h2 className="text-3xl md:text-4xl font-semibold mb-8">📖 About Us</h2>
+      <h2 className="text-3xl md:text-4xl font-semibold mb-2">📖 About Us</h2>
+      <span className="block mx-auto w-24 h-1 bg-blue-400 rounded-full mb-8" aria-hidden="true"></span>
 
       {/* About Us Paragraphs */}
       <div className="max-w-6xl text-left mb-12">
@@ -89,7 +90,8 @@ const AboutUs = () => {
       </div>
 
       {/* What We Offer Heading */}
-      <h2 className="text-3xl md:text-4xl font-semibold mb-8">✨ What We Offer</h2>
+      <h2 className="text-3xl md:text-4xl font-semibold mb-2">✨ What We Offer</h2>
+      <span className="block mx-auto w-24 h-1 bg-blue-400 rounded-full mb-8" aria-hidden="true"></span>
 
       {/* Offerings Cards */}
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-gray-700 text-sm max-w-6xl w-full mb-12">

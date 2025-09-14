@@ -31,9 +31,8 @@ const TestimonialsSection = () => {
       className="flex flex-col items-center px-6 py-12 md:px-20 bg-white"
     >
       {/* Heading */}
-      <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-center">
-        Testimonials
-      </h2>
+      <h2 className="text-3xl md:text-4xl font-semibold mb-2 text-center">Testimonials</h2>
+      <span className="block mx-auto w-24 h-1 bg-blue-400 rounded-full mb-6" aria-hidden="true"></span>
 
       {/* Subtext */}
       <p className="max-w-6xl text-gray-600 text-base md:text-lg leading-relaxed mb-12 text-center">

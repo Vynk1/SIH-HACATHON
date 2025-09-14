@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 const NavBar = () => {
+  const [open, setOpen] = useState(false);
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-black/40 backdrop-blur-md shadow-md">
       <div className="max-w-7xl mx-auto flex justify-center sm:justify-between items-center px-6 py-4">
@@ -29,8 +30,25 @@ const NavBar = () => {
         </ul>
 
         {/* Mobile Menu Button */}
-        <button className="sm:hidden text-white focus:outline-none">☰</button>
+        <button onClick={() => setOpen(v => !v)} className="sm:hidden text-white focus:outline-none">☰</button>
       </div>
+
+      {/* Mobile dropdown */}
+      {open && (
+        <div className="sm:hidden bg-black/80 backdrop-blur-md">
+          <ul className="flex flex-col gap-4 px-6 py-4">
+            {[
+              { name: "About", href: "#about" },
+              { name: "Testimonials", href: "#testimonials" },
+              { name: "Our Team", href: "#team" },
+            ].map((item, index) => (
+              <li key={index}>
+                <a href={item.href} className="block text-white py-1">{item.name}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 };

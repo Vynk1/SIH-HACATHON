@@ -1,4 +1,6 @@
 import React from "react";
+import NavBar from "../component/NavBar";
+import Footer from "../component/Footer";
 
 // Import local images from assets folder
 import event1 from "../assets/event1.jpeg";
@@ -55,7 +57,9 @@ const events = [
 
 const Event = () => {
   return (
-    <section className="p-6 md:p-12 bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen">
+      <NavBar />
+      <section className="p-6 md:p-12 pt-28 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-10">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800 relative inline-block">
@@ -99,7 +103,9 @@ const Event = () => {
           </div>
         ))}
       </div>
-    </section>
+      </section>
+      <Footer />
+    </div>
   );
 };
 
