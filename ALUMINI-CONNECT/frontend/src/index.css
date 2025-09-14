@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+/* Custom subtle animations and decorative utilities */
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow { animation: spin-slow 12s linear infinite; }
+
+.globe-glow {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgba(74,158,226,0.35), rgba(74,158,226,0.12), transparent);
+  filter: blur(40px);
+  pointer-events: none;
+}

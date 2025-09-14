@@ -18,7 +18,7 @@ const Donation = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-gray-100 via-white to-gray-100 px-4">
       <div className="w-full max-w-md bg-[#d8def0] rounded-xl shadow-md p-8">
         <h2 className="text-2xl font-bold text-center text-black mb-6">Kindly fill the form</h2>
         
@@ -38,7 +38,7 @@ const Donation = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full border-b-2 border-gray-400 bg-transparent outline-none py-1 px-2"
+              className="w-full border-b-2 border-gray-400 bg-transparent outline-none py-1 px-2 focus:border-indigo-600 transition-colors"
               placeholder="Enter your name"
               required
             />
@@ -59,7 +59,7 @@ const Donation = () => {
               name="amount"
               value={formData.amount}
               onChange={handleChange}
-              className="w-full border-b-2 border-gray-400 bg-transparent outline-none py-1 px-2"
+              className="w-full border-b-2 border-gray-400 bg-transparent outline-none py-1 px-2 focus:border-indigo-600 transition-colors"
               placeholder="Enter amount"
               required
             />
@@ -80,7 +80,7 @@ const Donation = () => {
               name="purpose"
               value={formData.purpose}
               onChange={handleChange}
-              className="w-full border-b-2 border-gray-400 bg-transparent outline-none py-1 px-2"
+              className="w-full border-b-2 border-gray-400 bg-transparent outline-none py-1 px-2 focus:border-indigo-600 transition-colors"
               placeholder="Donation purpose"
               required
             />
@@ -90,7 +90,7 @@ const Donation = () => {
           <div className="text-center">
             <button
               type="submit"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300"
+              className="bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
             >
               Submit
             </button>

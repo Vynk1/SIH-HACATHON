@@ -63,7 +63,7 @@ const Event = () => {
           <span className="block w-16 h-1 bg-indigo-500 mt-2 rounded-full"></span>
         </h2>
 
-        <button className="mt-4 md:mt-0 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg shadow-md transition duration-300">
+        <button className="mt-4 md:mt-0 bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 text-white px-6 py-2 rounded-lg shadow-md transition duration-300">
           + New Event
         </button>
       </div>
@@ -78,7 +78,7 @@ const Event = () => {
         {events.map((event, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition"
+            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
           >
             {/* Event Image */}
             <img

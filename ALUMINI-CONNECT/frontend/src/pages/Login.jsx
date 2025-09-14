@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"; // Optional if using React Router
 import { useState } from "react";
 
 function Login() {
-  const {isLoggedIn, setIsLoggedIn} = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen w-full bg-gradient-to-b from-[#0F2027] via-[#357E9E] to-[#478093] text-white font-[Poppins]">
@@ -29,20 +29,20 @@ function Login() {
           <label className="text-sm sm:text-base mb-2 w-full md:w-[380px] text-left">
             Email
           </label>
-          <input 
-            type="email" 
-            placeholder="Enter your email" 
-            className="w-full md:w-[380px] p-3 rounded-xl mb-5 text-black text-[15px] shadow-md focus:outline-none border border-transparent hover:border-white transition"
+          <input
+            type="email"
+            placeholder="Enter your email"
+            className="w-full md:w-[380px] p-3 rounded-xl mb-5 text-black text-[15px] shadow-md focus:outline-none border border-transparent hover:border-white transition focus:ring-2 focus:ring-[#4A9EE2]/60"
           />
 
           {/* Password */}
           <label className="text-sm sm:text-base mb-2 w-full md:w-[380px] text-left">
             Password
           </label>
-          <input 
-            type="password" 
-            placeholder="********" 
-            className="w-full md:w-[380px] p-3 rounded-xl mb-5 text-black text-[15px] shadow-md focus:outline-none border border-transparent hover:border-white transition"
+          <input
+            type="password"
+            placeholder="********"
+            className="w-full md:w-[380px] p-3 rounded-xl mb-5 text-black text-[15px] shadow-md focus:outline-none border border-transparent hover:border-white transition focus:ring-2 focus:ring-[#4A9EE2]/60"
           />
 
           {/* Options
@@ -57,7 +57,7 @@ function Login() {
           <Link 
             onClick={() => setIsLoggedIn(true)}
             to="/CreateAccount" 
-            className="w-full md:w-[380px] text-center bg-[#4A9EE2] text-white py-3 rounded-xl font-medium mb-4 shadow-md hover:opacity-90 transition"
+            className="w-full md:w-[380px] text-center bg-[#4A9EE2] text-white py-3 rounded-xl font-medium mb-4 shadow-md hover:opacity-90 transition hover:shadow-lg"
           >
             Sign in
           </Link>
@@ -65,7 +65,7 @@ function Login() {
           {/* Google Button */}
           <button 
             type="button" 
-            className="w-full md:w-[380px] flex justify-center items-center bg-white text-black py-3 rounded-xl font-medium mb-4 shadow-md hover:opacity-90 transition"
+            className="w-full md:w-[380px] flex justify-center items-center bg-white text-black py-3 rounded-xl font-medium mb-4 shadow-md hover:opacity-90 transition hover:shadow-lg"
           >
             <img src={google} alt="Google" className="w-6 sm:w-7 mr-2" />
             Sign in with Google

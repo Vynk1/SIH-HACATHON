@@ -30,7 +30,7 @@ const TeamSection = () => {
         {teamMembers.map((member, index) => (
           <div
             key={index}
-            className="flex flex-col items-center text-center bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+            className="flex flex-col items-center text-center bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
           >
             <img
               src={member.img}

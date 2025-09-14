@@ -49,7 +49,7 @@ const TestimonialsSection = () => {
         {testimonials.map((t, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition-shadow duration-300"
+            className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
           >
             <img
               src={t.img}

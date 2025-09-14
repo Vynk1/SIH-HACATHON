@@ -96,7 +96,7 @@ const AboutUs = () => {
         {offerings.map((item, idx) => (
           <div
             key={idx}
-            className="bg-white p-5 rounded-lg shadow hover:shadow-md transition-shadow duration-300 text-left"
+            className="bg-white p-5 rounded-lg shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1 text-left"
           >
             <h4 className="font-semibold text-lg mb-2">{item.title}</h4>
             <p className="leading-relaxed">{item.desc}</p>
