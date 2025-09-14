@@ -2,7 +2,7 @@ import React from "react";
 import HeroSection from "../component/HeroSection";
 import AboutUs from "../component/AboutUs";
 //import Stats from '../component/Stats'
-import TestimonialsSection from "../component/testimonials";
+import TestimonialsSection from "../component/Testimonials";
 import Team from "../component/OurTeam";
 
 // import React from "react";
