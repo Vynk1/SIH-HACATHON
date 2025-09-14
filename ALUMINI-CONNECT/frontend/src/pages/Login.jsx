@@ -10,7 +10,7 @@ function Login() {
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-[#0F2027] via-[#357E9E] to-[#478093] text-white font-[Poppins] overflow-x-hidden">
       
-<div className="flex flex-col md:flex-row min-h-screen w-full">
+<div className="flex flex-col md:flex-row min-h-screen w-full max-w-7xl mx-auto px-6">
       {/* Left Section - Form */}
       <div className="flex-1 flex flex-col justify-center px-6 sm:px-10 md:px-16 py-12">
         
@@ -84,7 +84,7 @@ function Login() {
       </div>
 
       {/* Right Section - Logo & Text */}
-      <div className="flex-1 flex flex-col justify-center items-center text-center px-6 py-12">
+      <div className="flex-1 flex flex-col justify-center items-center text-center px-6 md:px-10 lg:px-16 py-12 max-w-2xl mx-auto">
         <img src={Globe} alt="Logo" className="w-48 sm:w-64 md:w-80 lg:w-[500px] mb-6" />
         <h1 className="font-[Poltawski_Nowy] text-4xl sm:text-5xl md:text-[72px] lg:text-[80px] leading-tight md:leading-[90px] lg:leading-[100px]">
           ALUMNI <br /> CONNECT
