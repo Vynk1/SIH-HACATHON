@@ -8,8 +8,9 @@ function Login() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen w-full bg-gradient-to-b from-[#0F2027] via-[#357E9E] to-[#478093] text-white font-[Poppins]">
+    <div className="min-h-screen w-full bg-gradient-to-b from-[#0F2027] via-[#357E9E] to-[#478093] text-white font-[Poppins] overflow-x-hidden">
       
+<div className="flex flex-col md:flex-row min-h-screen w-full">
       {/* Left Section - Form */}
       <div className="flex-1 flex flex-col justify-center px-6 sm:px-10 md:px-16 py-12">
         
@@ -91,6 +92,7 @@ function Login() {
         <p className="text-base sm:text-lg md:text-2xl lg:text-[24px] italic font-semibold mt-2">
           Stay connected, grow together
         </p>
+      </div>
       </div>
       <Footer />
     </div>
