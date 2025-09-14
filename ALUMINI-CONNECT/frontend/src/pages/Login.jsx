@@ -2,6 +2,7 @@ import Globe from "../assets/logo.png";
 import google from "../assets/google.png";
 import { Link } from "react-router-dom"; // Optional if using React Router
 import { useState } from "react";
+import Footer from "../component/Footer";
 
 function Login() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,6 +24,7 @@ function Login() {
         </div>
 
         {/* Form */}
+        <div className="bg-white/10 border border-white/10 rounded-2xl backdrop-blur-md p-6 w-full max-w-xl mx-auto shadow-xl">
         <form className="flex flex-col items-center md:items-start w-full">
           
           {/* Email */}
@@ -56,7 +58,7 @@ function Login() {
           {/* Sign In Button */}
           <Link 
             onClick={() => setIsLoggedIn(true)}
-            to="/CreateAccount" 
+            to="/register"
             className="w-full md:w-[380px] text-center bg-[#4A9EE2] text-white py-3 rounded-xl font-medium mb-4 shadow-md hover:opacity-90 transition hover:shadow-lg"
           >
             Sign in
@@ -77,6 +79,7 @@ function Login() {
             <Link to={"/register"} className="text-[#4A9EE2] hover:underline">Sign up for free!</Link>
           </p>
         </form>
+        </div>
       </div>
 
       {/* Right Section - Logo & Text */}
@@ -89,6 +92,7 @@ function Login() {
           Stay connected, grow together
         </p>
       </div>
+      <Footer />
     </div>
   );
 }
