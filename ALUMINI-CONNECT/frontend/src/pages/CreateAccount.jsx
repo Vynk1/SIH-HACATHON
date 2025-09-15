@@ -58,7 +58,7 @@ const MultiStepForm = () => {
                     name="role"
                     value={formData.role}
                     onChange={handleChange}
-                    className="flex-1 bg-transparent border-none outline-none text-white text-base"
+                    className="role-select flex-1 bg-transparent border-none outline-none text-white text-base"
                     required
                   >
                     <option value="" disabled>Select Role</option>
