@@ -63,6 +63,7 @@ const MultiStepForm = () => {
                   >
                     <option value="" disabled>Select Role</option>
                     <option value="Alumni">Alumni</option>
+                    <option value="Student">Student</option>
                     <option value="Admin">Admin</option>
                   </select>
                 </div>
