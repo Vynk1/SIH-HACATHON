@@ -29,7 +29,7 @@ exports.postRegister = [
 
       const exists = await User.findOne({ email });
       if (exists)
-        return res.status(409).json({ message: "Invalid email or password" });
+        return res.status(409).json({ message: "Email already registered" });
 
       const hash = await bcrypt.hash(password, 12);
       const user = await User.create({
