@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FiUser, FiUserCheck, FiMail, FiLock, FiPhone } from "react-icons/fi";
 import Phone from "../assets/phone.jpg"; // Right-side phone mockup
+import { Auth } from "../utils/api";
 
 const MultiStepForm = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     full_name: "",
@@ -18,10 +21,15 @@ const MultiStepForm = () => {
 
   const handleNext = () => setStep(2);
   const handleBack = () => setStep(1);
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
-    alert("Form submitted! Check console for details.");
+    try {
+      await Auth.register(formData);
+      navigate('/login');
+    } catch (err) {
+      console.error('register_failed', err);
+      alert('Registration failed: ' + err.message);
+    }
   };
 
   return (
