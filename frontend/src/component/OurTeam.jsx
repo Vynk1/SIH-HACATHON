@@ -4,6 +4,7 @@ import navyaImg from "../assets/navya.jpeg";
 import namanImg from "../assets/naman.jpeg";
 import arshdeepImg from "../assets/arshdeep.jpeg";
 import deepanshuImg from "../assets/deepanshu.jpeg";
+import Reveal from "../components/Reveal";
 
 const teamMembers = [
   { name: "Vinayak Gupta", img: vinayakImg },
@@ -21,16 +22,19 @@ const TeamSection = () => {
       className="flex flex-col items-center px-6 py-12 md:px-20 bg-white"
     >
       {/* Heading */}
-      <h2 className="text-3xl md:text-4xl font-semibold mb-10 text-center">
-        Meet Our Team
-      </h2>
+      <Reveal>
+        <h2 className="text-3xl md:text-4xl font-semibold mb-10 text-center">
+          Meet Our Team
+        </h2>
+      </Reveal>
 
       {/* Team Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 max-w-6xl w-full">
         {teamMembers.map((member, index) => (
-          <div
+          <Reveal
             key={index}
-            className="flex flex-col items-center text-center bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+            as="div"
+            className="flex flex-col items-center text-center bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 hover-elevate"
           >
             <img
               src={member.img}
@@ -38,7 +42,7 @@ const TeamSection = () => {
               className="w-28 h-28 md:w-32 md:h-32 rounded-full object-cover mb-4"
             />
             <p className="text-lg font-medium text-gray-800">{member.name}</p>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>
