@@ -14,3 +14,6 @@
   filter: blur(40px);
   pointer-events: none;
 }
+
+/* Ensure dropdown menu options render with black text */
+.role-select option { color: #000; }
