@@ -42,7 +42,7 @@ exports.postRegister = [
         full_name,
         email,
         password: hash,
-        role,
+        role: normalizedRole,
         phone_number,
       });
 
