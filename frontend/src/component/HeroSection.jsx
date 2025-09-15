@@ -38,6 +38,7 @@ import NavBar from "./NavBar";
 import { Link } from "react-router-dom";
 // Example: Globe icon from react-icons
 import { FaGlobe } from "react-icons/fa";
+import Reveal from "../components/Reveal";
 
 const HeroSection = () => {
   return (
@@ -50,16 +51,22 @@ const HeroSection = () => {
       {/* Hero content */}
       <div className="relative z-20 flex flex-col items-center gap-8 mt-[200px] pt-24 mb-24">
         {/* Globe Icon instead of background image */}
-        <FaGlobe className="text-blue-400 w-40 h-40 animate-spin-slow" />
+        <Reveal>
+          <FaGlobe className="text-blue-400 w-40 h-40 animate-spin-slow" />
+        </Reveal>
 
-        <h1 className="text-5xl md:text-6xl font-semibold">ALUMNI CONNECT</h1>
+        <Reveal>
+          <h1 className="text-5xl md:text-6xl font-semibold">ALUMNI CONNECT</h1>
+        </Reveal>
 
-        <Link
-          to="/login"
-          className="bg-blue-500 cursor-pointer hover:bg-blue-600 text-white px-8 py-3 rounded-lg text-base font-medium transition-colors duration-300"
-        >
-          Get Started
-        </Link>
+        <Reveal>
+          <Link
+            to="/login"
+            className="bg-blue-500 cursor-pointer hover:bg-blue-600 text-white px-8 py-3 rounded-lg text-base font-medium transition-colors duration-300 transform hover:scale-105"
+          >
+            Get Started
+          </Link>
+        </Reveal>
       </div>
     </div>
   );

@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+:root { scroll-behavior: smooth; }
+
+/* Smooth reveal on scroll */
+.reveal { opacity: 0; transform: translateY(12px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+/* Slower spin utility to keep original blue/globe styles */
+.animate-spin-slow { animation: spin 8s linear infinite; }
+
+/* Card hover elevation */
+.hover-elevate { transition: transform .3s ease, box-shadow .3s ease; }
+.hover-elevate:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgb(0 0 0 / 0.12); }

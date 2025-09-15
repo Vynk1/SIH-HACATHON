@@ -18,6 +18,7 @@ exports.postRegister = [
   async (req, res) => {
     try {
       const { full_name, email, password, role, phone_number } = req.body;
+      const normalizedRole = typeof role === 'string' ? role.toLowerCase() : role;
 
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -37,7 +38,7 @@ exports.postRegister = [
         full_name,
         email,
         password: hash,
-        role,
+        role: normalizedRole,
         phone_number,
       });
 

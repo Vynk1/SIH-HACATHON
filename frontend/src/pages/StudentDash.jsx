@@ -45,6 +45,7 @@ const StudentDashboard = () => {
   const [availableMentors, setAvailableMentors] = useState([]);
   const [myMentorshipRequests, setMyMentorshipRequests] = useState([]);
   const [events, setEvents] = useState([]);
+  const [registering, setRegistering] = useState(null);
   
   // Loading and form states
   const [loading, setLoading] = useState(true);
@@ -184,6 +185,26 @@ const StudentDashboard = () => {
   };
 
   // Mentorship request handlers
+  const handleRegisterForEvent = async (eventId) => {
+    try {
+      setRegistering(eventId);
+      setError('');
+      setSuccess('');
+      const response = await api.registerForEvent(eventId);
+      if (response.success) {
+        setSuccess('Successfully registered for the event!');
+        fetchDashboardData();
+      } else {
+        setError(response.message || 'Registration failed');
+      }
+    } catch (error) {
+      console.error('Error registering for event:', error);
+      setError(error.message || 'Registration failed');
+    } finally {
+      setRegistering(null);
+    }
+  };
+
   const handleMentorshipRequestSubmit = async (mentorId) => {
     try {
       setSubmittingRequest(true);
@@ -565,8 +586,12 @@ const StudentDashboard = () => {
                     {event.capacity && <span>👥 {event.capacity} capacity</span>}
                   </div>
                 </div>
-                <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded transition">
-                  Register
+                <button
+                  onClick={() => handleRegisterForEvent(event._id)}
+                  disabled={registering === event._id}
+                  className="px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white rounded transition"
+                >
+                  {registering === event._id ? 'Registering...' : 'Register'}
                 </button>
               </div>
             </div>

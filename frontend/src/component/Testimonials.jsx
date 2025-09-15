@@ -1,4 +1,5 @@
 import React from "react";
+import Reveal from "../components/Reveal";
 
 const TestimonialsSection = () => {
   const testimonials = [
@@ -31,25 +32,28 @@ const TestimonialsSection = () => {
       className="flex flex-col items-center px-6 py-12 md:px-20 bg-white"
     >
       {/* Heading */}
-      <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-center">
-        Testimonials
-      </h2>
+      <Reveal>
+        <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-center">
+          Testimonials
+        </h2>
+      </Reveal>
 
       {/* Subtext */}
-      <p className="max-w-6xl text-gray-600 text-base md:text-lg leading-relaxed mb-12 text-center">
+      <Reveal as="p" className="max-w-6xl text-gray-600 text-base md:text-lg leading-relaxed mb-12 text-center">
         Every connection tells a story. Alumni Connect brings together graduates
         from across the globe to inspire, support, and create lasting bonds. The
         success of our alumni speaks volumes. Hear how Alumni Connect is helping
         graduates stay connected, grow professionally, and give back to their
         alma mater.
-      </p>
+      </Reveal>
 
       {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
         {testimonials.map((t, index) => (
-          <div
+          <Reveal
             key={index}
-            className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition-shadow duration-300"
+            as="div"
+            className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition-shadow duration-300 hover-elevate"
           >
             <img
               src={t.img}
@@ -59,7 +63,7 @@ const TestimonialsSection = () => {
             <h4 className="text-lg font-semibold text-gray-800">{t.name}</h4>
             <p className="text-sm text-gray-500 mb-3">{t.role}</p>
             <p className="text-gray-700 text-sm leading-relaxed">“{t.feedback}”</p>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

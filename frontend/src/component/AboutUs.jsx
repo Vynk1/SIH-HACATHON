@@ -1,6 +1,7 @@
 import React from "react";
 import Aboutus1 from "../assets/aboutus1.jpeg";
 import Aboutus2 from "../assets/aboutus2.jpeg";
+import Reveal from "../components/Reveal";
 
 const AboutUs = () => {
   const offerings = [
@@ -44,10 +45,12 @@ const AboutUs = () => {
       className="flex flex-col items-center text-center px-6 py-12 md:px-20 bg-white"
     >
       {/* About Us Heading */}
-      <h2 className="text-3xl md:text-4xl font-semibold mb-8">📖 About Us</h2>
+      <Reveal>
+        <h2 className="text-3xl md:text-4xl font-semibold mb-8">📖 About Us</h2>
+      </Reveal>
 
       {/* About Us Paragraphs */}
-      <div className="max-w-6xl text-left mb-12">
+      <Reveal as="div" className="max-w-6xl text-left mb-12">
         <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-4">
           At Alumni Connect, our mission is to bridge the gap between alumni,
           students, and institutions by creating a unified digital platform for
@@ -86,26 +89,29 @@ const AboutUs = () => {
             future planning.
           </li>
         </ul>
-      </div>
+      </Reveal>
 
       {/* What We Offer Heading */}
-      <h2 className="text-3xl md:text-4xl font-semibold mb-8">✨ What We Offer</h2>
+      <Reveal>
+        <h2 className="text-3xl md:text-4xl font-semibold mb-8">✨ What We Offer</h2>
+      </Reveal>
 
       {/* Offerings Cards */}
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-gray-700 text-sm max-w-6xl w-full mb-12">
         {offerings.map((item, idx) => (
-          <div
+          <Reveal
             key={idx}
-            className="bg-white p-5 rounded-lg shadow hover:shadow-md transition-shadow duration-300 text-left"
+            as="div"
+            className="bg-white p-5 rounded-lg shadow hover:shadow-md transition-shadow duration-300 text-left hover-elevate"
           >
             <h4 className="font-semibold text-lg mb-2">{item.title}</h4>
             <p className="leading-relaxed">{item.desc}</p>
-          </div>
+          </Reveal>
         ))}
       </div>
 
       {/* Images Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full">
+      <Reveal as="div" className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full">
         <img
           src={Aboutus1}
           alt="Networking event"
@@ -116,7 +122,7 @@ const AboutUs = () => {
           alt="Community gathering"
           className="rounded-lg shadow-md object-cover w-full h-64 md:h-80"
         />
-      </div>
+      </Reveal>
     </section>
   );
 };
