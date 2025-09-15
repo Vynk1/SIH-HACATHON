@@ -18,6 +18,12 @@ exports.postRegister = [
   async (req, res) => {
     try {
       const { full_name, email, password, role, phone_number } = req.body;
+      // normalize role to lowercase to match schema enum
+      const normalizedRole = role && typeof role === 'string' ? role.toLowerCase() : null;
+      const allowedRoles = ['alumni','admin','student'];
+      if (!normalizedRole || !allowedRoles.includes(normalizedRole)) {
+        return res.status(400).json({ message: 'Invalid or missing role. Allowed: alumni, admin, student' });
+      }
 
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
