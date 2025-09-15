@@ -48,6 +48,7 @@ const Donation = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log("triggered!")
     e.preventDefault();
     
     if (!isAuthenticated) {
@@ -71,6 +72,7 @@ const Donation = () => {
       };
       
       const response = await api.createDonation(donationData);
+      console.log({response})
       if (response.success) {
         setSuccess('Donation submitted successfully! Thank you for your contribution.');
         setFormData({ amount: '', purpose: '' });
