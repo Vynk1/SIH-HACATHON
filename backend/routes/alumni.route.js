@@ -16,4 +16,8 @@ alumniRouter.get("/me", auth(["alumni"]), alumniController.getAlumniProfile);
 //  * body: { batch_year, degree, department?, current_position?, company?, linkedin_url?, location?, skills? }
 alumniRouter.post("/me", auth(["alumni"]), alumniController.postAlumniProfile);
 
+//  * GET /alumni/all
+//  * Get all alumni (for admin)
+alumniRouter.get("/all", auth(["admin"]), alumniController.getAllAlumni);
+
 module.exports = alumniRouter;

@@ -28,4 +28,28 @@ mentorRouter.patch(
   mentorController.patchRequest
 );
 
+//  * GET /mentorships/my-requests
+//  * Students see their own mentorship requests
+mentorRouter.get(
+  "/my-requests",
+  auth(["student"]),
+  mentorController.getMyMentorshipRequests
+);
+
+//  * GET /mentorships/available-mentors
+//  * Students see available mentors
+mentorRouter.get(
+  "/available-mentors",
+  auth(["student"]),
+  mentorController.getAvailableMentors
+);
+
+//  * GET /mentorships/all
+//  * Admin see all mentorship requests
+mentorRouter.get(
+  "/all",
+  auth(["admin"]),
+  mentorController.getAllMentorshipRequests
+);
+
 module.exports = mentorRouter;

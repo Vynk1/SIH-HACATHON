@@ -9,6 +9,8 @@ const cookieParser = require("cookie-parser");
 const authRouter = require("./routes/auth.route");
 const alumniRouter = require("./routes/alumni.route");
 const adminRouter = require("./routes/admin.route");
+const studentRouter = require("./routes/student.route");
+const studentsRouter = require("./routes/students.route");
 const eventRouter = require("./routes/event.route");
 const donationRouter = require("./routes/donation.route");
 const mentorRouter = require("./routes/mentor.route");
@@ -16,7 +18,7 @@ const mentorRouter = require("./routes/mentor.route");
 const app = express();
 
 app.use(cors({
-  origin: process.env.FRONT_URL || "http://localhost:5173",
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   credentials: true
 }));
@@ -45,6 +47,8 @@ app.get("/", (_req, res) => res.send("API running"));
 app.use("/auth", authRouter);
 app.use("/alumni", alumniRouter);
 app.use("/admin", adminRouter);
+app.use("/student", studentRouter);
+app.use("/students", studentsRouter);
 app.use("/events", eventRouter);
 app.use("/donations", donationRouter);
 app.use("/mentorships", mentorRouter);

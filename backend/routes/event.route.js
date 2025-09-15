@@ -21,4 +21,12 @@ eventRouter.post(
   eventController.postEventPart
 );
 
+//  * DELETE /events/:id
+//  * Admin delete event
+eventRouter.delete(
+  "/:id",
+  auth(["admin"]),
+  eventController.deleteEvent
+);
+
 module.exports = eventRouter;

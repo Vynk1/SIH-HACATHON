@@ -22,6 +22,7 @@ exports.postRegister = [
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({
+          success: false,
           message: "Validation failed",
           errors: errors.array(),
         });
@@ -29,7 +30,7 @@ exports.postRegister = [
 
       const exists = await User.findOne({ email });
       if (exists)
-        return res.status(409).json({ message: "Invalid email or password" });
+        return res.status(409).json({ success: false, message: "Invalid email or password" });
 
       const hash = await bcrypt.hash(password, 12);
       const user = await User.create({
@@ -42,7 +43,8 @@ exports.postRegister = [
 
       if (user) {
         res.status(201).json({
-          msg: "user Registered successfully",
+          success: true,
+          message: "user Registered successfully",
         });
       }
     } catch (err) {
@@ -58,13 +60,13 @@ exports.postLogin = async (req, res) => {
     if (!email || !password)
       return res
         .status(400)
-        .json({ message: "email and password are required" });
+        .json({ success: false, message: "email and password are required" });
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(401).json({ message: "Invalid credentials" });
+    if (!user) return res.status(401).json({ success: false, message: "Invalid credentials" });
 
     const ok = await bcrypt.compare(password, user.password);
-    if (!ok) return res.status(401).json({ message: "Invalid credentials" });
+    if (!ok) return res.status(401).json({ success: false, message: "Invalid credentials" });
 
     const token = jwt.sign(
       { _id: user._id.toString(), role: user.role, full_name: user.full_name },
@@ -80,6 +82,8 @@ exports.postLogin = async (req, res) => {
         }
         res.cookie("token", token, { httpOnly: true });
         res.json({
+          success: true,
+          token: token,
           user: {
             _id: user._id,
             full_name: user.full_name,
@@ -100,7 +104,10 @@ exports.getUserProfile = async (req, res) => {
     const me = await User.findById(req.user._id).select(
       "_id full_name email role phone_number created_at"
     );
-    res.json(me);
+    res.json({
+      success: true,
+      user: me
+    });
   } catch (err) {
     console.error("ME_ERROR", err);
     res.status(500).json({ message: "Server error" });

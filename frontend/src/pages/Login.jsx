@@ -1,13 +1,83 @@
 import Globe from "../assets/logo.png";
 import google from "../assets/google.png";
-import { Link } from "react-router-dom"; // Optional if using React Router
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import AuthDebugger from "../components/AuthDebugger";
 
 function Login() {
-  const {isLoggedIn, setIsLoggedIn} = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Get the page user was trying to access before login
+  const from = location.state?.from?.pathname || '/';
+  
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+    // Clear error when user starts typing
+    if (error) setError('');
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    
+    try {
+      console.log('🔐 Starting login process with:', { email: formData.email });
+      const result = await login(formData);
+      console.log('🔐 Login result:', result);
+      
+      if (result.success) {
+        console.log('✅ Login successful! User role:', result.user.role);
+        
+        // Redirect based on user role (roles are lowercase in database)
+        let redirectPath;
+        switch (result.user.role) {
+          case 'admin':
+            redirectPath = '/adminDash';
+            console.log('🔄 Redirecting admin to:', redirectPath);
+            break;
+          case 'alumni':
+            redirectPath = '/alumnidash';
+            console.log('🔄 Redirecting alumni to:', redirectPath);
+            break;
+          case 'student':
+            redirectPath = '/studentdash';
+            console.log('🔄 Redirecting student to:', redirectPath);
+            break;
+          default:
+            redirectPath = from === '/login' ? '/' : from; // Fallback to home or intended page
+            console.log('🔄 Using fallback redirect to:', redirectPath);
+        }
+        
+        console.log('🚀 About to navigate to:', redirectPath);
+        navigate(redirectPath, { replace: true });
+      } else {
+        console.log('❌ Login failed - result.success is false');
+      }
+    } catch (error) {
+      console.error('❌ Login error:', error);
+      setError(error.message || 'Login failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen w-full bg-gradient-to-b from-[#0F2027] via-[#357E9E] to-[#478093] text-white font-[Poppins]">
+      <AuthDebugger />
       
       {/* Left Section - Form */}
       <div className="flex-1 flex flex-col justify-center px-6 sm:px-10 md:px-16 py-12">
@@ -23,16 +93,28 @@ function Login() {
         </div>
 
         {/* Form */}
-        <form className="flex flex-col items-center md:items-start w-full">
+        <form className="flex flex-col items-center md:items-start w-full" onSubmit={handleSubmit}>
+          
+          {/* Error Message */}
+          {error && (
+            <div className="w-full md:w-[380px] mb-4 p-3 bg-red-500/20 border border-red-500 rounded-xl text-red-200 text-sm">
+              {error}
+            </div>
+          )}
           
           {/* Email */}
           <label className="text-sm sm:text-base mb-2 w-full md:w-[380px] text-left">
             Email
           </label>
           <input 
-            type="email" 
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
             placeholder="Enter your email" 
             className="w-full md:w-[380px] p-3 rounded-xl mb-5 text-black text-[15px] shadow-md focus:outline-none border border-transparent hover:border-white transition"
+            required
+            disabled={loading}
           />
 
           {/* Password */}
@@ -40,9 +122,14 @@ function Login() {
             Password
           </label>
           <input 
-            type="password" 
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
             placeholder="********" 
             className="w-full md:w-[380px] p-3 rounded-xl mb-5 text-black text-[15px] shadow-md focus:outline-none border border-transparent hover:border-white transition"
+            required
+            disabled={loading}
           />
 
           {/* Options
@@ -54,13 +141,13 @@ function Login() {
           </div> */}
 
           {/* Sign In Button */}
-          <Link 
-            onClick={() => setIsLoggedIn(true)}
-            to="/CreateAccount" 
-            className="w-full md:w-[380px] text-center bg-[#4A9EE2] text-white py-3 rounded-xl font-medium mb-4 shadow-md hover:opacity-90 transition"
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full md:w-[380px] cursor-pointer text-center bg-[#4A9EE2] text-white py-3 rounded-xl font-medium mb-4 shadow-md hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Sign in
-          </Link>
+            {loading ? 'Signing in...' : 'Sign in'}
+          </button>
 
           {/* Google Button */}
           <button 
