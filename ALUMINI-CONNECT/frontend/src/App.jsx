@@ -9,6 +9,7 @@ import EnterCode from "./pages/EnterCode";
 import LandingPage from "./pages/LandingPage";
 import Donation from "./pages/Donation"
 import Events from "./pages/Events"
+import StudentDash from "./pages/StudentDash"
 
 function App() {
   return (
@@ -18,9 +19,9 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<CreateAccount />} />
-        <Route path="/register" element={<CreateAccount />} />
         <Route path="/alumnidash" element={<AlumniDash />} />
         <Route path="/adminDash" element={<AdminDash />} />
+        <Route path="/studentDash" element={<StudentDash />} />
         <Route path="/me" element={<Profile />} />
         <Route path="/events" element={<Events />} />
         <Route path="/donations" element={<Donation />} />
