@@ -43,6 +43,7 @@ import { FaGlobe } from "react-icons/fa";
 const HeroSection = () => {
   return (
     <div className="relative flex flex-col min-h-screen w-screen overflow-hidden text-white text-center px-5 font-sans bg-gradient-to-b from-black via-slate-900 to-black">
+      <img src={bgImage} alt="background" className="absolute inset-0 w-full h-full object-cover opacity-15 select-none pointer-events-none z-0" />
       {/* Overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-60 z-10"></div>
 
