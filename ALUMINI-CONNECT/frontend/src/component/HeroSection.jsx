@@ -36,6 +36,7 @@
 import React from "react";
 import NavBar from "./NavBar";
 import { Link } from "react-router-dom";
+import bgImage from "../assets/background.png";
 // Example: Globe icon from react-icons
 import { FaGlobe } from "react-icons/fa";
 
