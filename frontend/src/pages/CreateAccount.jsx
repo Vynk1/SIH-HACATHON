@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { FiUser, FiUserCheck, FiMail, FiLock, FiPhone } from "react-icons/fi";
+import { FiUser, FiUserCheck, FiMail, FiLock, FiPhone, FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button, Input, Card } from "../components/ui";
+import { UserIcon, EnvelopeIcon, LockClosedIcon, PhoneIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import Phone from "../assets/phone.jpg"; // Right-side phone mockup
 
 const MultiStepForm = () => {
@@ -68,157 +71,313 @@ const MultiStepForm = () => {
     }
   };
 
+  const getStepTitle = () => {
+    switch (step) {
+      case 1: return "Let's Get Started";
+      case 2: return "Account Details";
+      default: return "Create Account";
+    }
+  };
+
+  const getStepDescription = () => {
+    switch (step) {
+      case 1: return "Tell us about yourself to get started";
+      case 2: return "Set up your login credentials";
+      default: return "Join our alumni community";
+    }
+  };
+
   return (
-    <div className="min-h-screen w-full flex justify-center items-center font-[Poppins] bg-gradient-to-b from-[#0f2027] via-[#357e9e] to-[#478093] text-white">
-      <div className="flex flex-col md:flex-row items-center justify-between w-4/5 max-w-[1200px] gap-10">
+    <motion.div 
+      className="min-h-screen w-full flex justify-center items-center font-[Poppins] bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900 text-white relative overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+    >
+      {/* Background Animation */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div 
+          className="absolute top-20 left-20 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-20 right-20 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.5, 0.3, 0.5],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 3
+          }}
+        />
+      </div>
 
+      <div className="flex flex-col lg:flex-row items-center justify-between w-full max-w-7xl mx-auto px-6 gap-12 relative z-10">
+        
         {/* Left Form Section */}
-        <div className="bg-black/30 p-10 rounded-xl w-full md:w-[500px] text-center md:text-left">
-          <h2 className="mb-8 text-2xl sm:text-3xl font-semibold">
-            {step === 1 ? "Create an Account" : "Personal Information"}
-          </h2>
-
-          {/* Error Message */}
-          {error && (
-            <div className="mb-4 p-3 bg-red-500/20 border border-red-500 rounded-xl text-red-200 text-sm">
-              {error}
-            </div>
-          )}
-          
-          {/* Success Message */}
-          {success && (
-            <div className="mb-4 p-3 bg-green-500/20 border border-green-500 rounded-xl text-green-200 text-sm">
-              {success}
-            </div>
-          )}
-
-          <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-            {step === 1 ? (
-              <>
-                {/* Full Name */}
-                <div className="flex items-center border-b border-white pb-2">
-                  <FiUser className="w-7 h-7 mr-3 mb-1" />
-                  <input
-                    type="text"
-                    name="full_name"
-                    placeholder="Full Name"
-                    value={formData.full_name}
-                    onChange={handleChange}
-                    className="flex-1 bg-transparent border-none outline-none text-white placeholder-white/80 text-base"
-                    required
-                  />
-                </div>
-
-                {/* Role */}
-                <div className="flex items-center border-b border-white pb-2">
-                  <FiUserCheck className="w-7 h-7 mr-3 mb-1" />
-                  <select
-                    name="role"
-                    value={formData.role}
-                    onChange={handleChange}
-                    className="flex-1 bg-transparent border-none outline-none text-white text-base"
-                    required
-                  >
-                    <option value="" disabled>Select Role</option>
-                    <option value="Alumni">Alumni</option>
-                    <option value="student">Student</option>
-                  </select>
-                </div>
-
-                {/* Next Button */}
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className="mt-5 bg-[#4a9ee2] hover:bg-[#357eb5] px-5 py-3 rounded-lg text-lg font-semibold transition text-white w-full"
+        <motion.div 
+          className="w-full lg:w-1/2 max-w-md mx-auto lg:mx-0"
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <Card variant="glass" padding="lg" hover={false}>
+            {/* Progress Indicator */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <motion.div 
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                    step >= 1 ? 'bg-blue-500 text-white' : 'bg-gray-600 text-gray-300'
+                  }`}
+                  whileScale={{ scale: step === 1 ? 1.1 : 1 }}
                 >
-                  Next
-                </button>
-              </>
-            ) : (
-              <>
-                {/* Email */}
-                <div className="flex items-center border-b border-white pb-2">
-                  <FiMail className="w-6 h-6 mr-3" />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="flex-1 bg-transparent border-none outline-none text-white placeholder-white/80 text-base"
-                    required
-                  />
-                </div>
+                  1
+                </motion.div>
+                <div className={`flex-1 h-1 mx-2 rounded ${
+                  step >= 2 ? 'bg-blue-500' : 'bg-gray-600'
+                }`} />
+                <motion.div 
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                    step >= 2 ? 'bg-blue-500 text-white' : 'bg-gray-600 text-gray-300'
+                  }`}
+                  whileScale={{ scale: step === 2 ? 1.1 : 1 }}
+                >
+                  2
+                </motion.div>
+              </div>
+              <motion.h2 
+                className="text-3xl font-bold mb-2 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent"
+                key={step}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                {getStepTitle()}
+              </motion.h2>
+              <motion.p 
+                className="text-gray-300"
+                key={step}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                {getStepDescription()}
+              </motion.p>
+            </div>
 
-                {/* Password */}
-                <div className="flex items-center border-b border-white pb-2">
-                  <FiLock className="w-6 h-6 mr-3" />
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="flex-1 bg-transparent border-none outline-none text-white placeholder-white/80 text-base"
-                    required
-                  />
-                </div>
+            {/* Messages */}
+            <AnimatePresence>
+              {error && (
+                <motion.div 
+                  className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-xl text-red-200 text-sm backdrop-blur-sm"
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="flex items-center space-x-2">
+                    <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    <span>{error}</span>
+                  </div>
+                </motion.div>
+              )}
+              
+              {success && (
+                <motion.div 
+                  className="mb-6 p-4 bg-green-500/20 border border-green-400/50 rounded-xl text-green-200 text-sm backdrop-blur-sm"
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="flex items-center space-x-2">
+                    <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>{success}</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-                {/* Phone Number (Optional) */}
-                <div className="flex items-center border-b border-white pb-2">
-                  <FiPhone className="w-6 h-6 mr-3" />
-                  <input
-                    type="text"
-                    name="phone_number"
-                    placeholder="Phone Number (Optional)"
-                    value={formData.phone_number}
-                    onChange={handleChange}
-                    className="flex-1 bg-transparent border-none outline-none text-white placeholder-white/80 text-base"
-                  />
-                </div>
-
-                {/* Buttons */}
-                <div className="flex gap-4 mt-5">
-                  <button
-                    type="button"
-                    onClick={handleBack}
-                    className="flex-1 bg-gray-600 hover:bg-gray-700 px-5 py-3 rounded-lg text-lg font-semibold transition text-white"
+            <form onSubmit={handleSubmit}>
+              <AnimatePresence mode="wait">
+                {step === 1 ? (
+                  <motion.div
+                    key="step1"
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -50 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-6"
                   >
-                    Back
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="flex-1 bg-[#4a9ee2] hover:bg-[#357eb5] px-5 py-3 rounded-lg text-lg font-semibold transition text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                    <Input
+                      label="Full Name"
+                      type="text"
+                      name="full_name"
+                      value={formData.full_name}
+                      onChange={handleChange}
+                      placeholder="Enter your full name"
+                      required
+                      leftIcon={<UserIcon className="w-5 h-5" />}
+                    />
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-200 mb-2">
+                        Role <span className="text-red-400">*</span>
+                      </label>
+                      <div className="relative">
+                        <UserCircleIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <select
+                          name="role"
+                          value={formData.role}
+                          onChange={handleChange}
+                          className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-300/30 hover:border-gray-300/50 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/10 backdrop-blur-sm text-white transition-all duration-300"
+                          required
+                        >
+                          <option value="" className="bg-gray-800 text-white">Select your role</option>
+                          <option value="alumni" className="bg-gray-800 text-white">Alumni</option>
+                          <option value="student" className="bg-gray-800 text-white">Student</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <Button
+                      type="button"
+                      onClick={handleNext}
+                      variant="primary"
+                      size="lg"
+                      className="w-full mt-8"
+                      rightIcon={<FiArrowRight />}
+                    >
+                      Continue
+                    </Button>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="step2"
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -50 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-6"
                   >
-                    {loading ? 'Creating Account...' : 'Submit'}
-                  </button>
-                </div>
-              </>
-            )}
-          </form>
-          
-          {/* Login Link */}
-          <div className="mt-4 text-center">
-            <p className="text-[14px] sm:text-[15px] text-gray-300">
-              Already have an account?{" "}
-              <Link to="/login" className="text-[#4a9ee2] hover:underline">
-                Sign in here
-              </Link>
-            </p>
-          </div>
-        </div>
+                    <Input
+                      label="Email Address"
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Enter your email"
+                      required
+                      leftIcon={<EnvelopeIcon className="w-5 h-5" />}
+                    />
+
+                    <Input
+                      label="Password"
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="Create a secure password"
+                      required
+                      leftIcon={<LockClosedIcon className="w-5 h-5" />}
+                    />
+
+                    <Input
+                      label="Phone Number (Optional)"
+                      type="tel"
+                      name="phone_number"
+                      value={formData.phone_number}
+                      onChange={handleChange}
+                      placeholder="Enter your phone number"
+                      leftIcon={<PhoneIcon className="w-5 h-5" />}
+                    />
+
+                    <div className="flex gap-4 mt-8">
+                      <Button
+                        type="button"
+                        onClick={handleBack}
+                        variant="ghost"
+                        size="lg"
+                        className="flex-1"
+                        leftIcon={<FiArrowLeft />}
+                      >
+                        Back
+                      </Button>
+                      <Button
+                        type="submit"
+                        variant="primary"
+                        size="lg"
+                        className="flex-1"
+                        disabled={loading}
+                        loading={loading}
+                      >
+                        {loading ? 'Creating Account...' : 'Create Account'}
+                      </Button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </form>
+            
+            {/* Login Link */}
+            <motion.div 
+              className="mt-8 text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <p className="text-sm text-gray-300">
+                Already have an account?{" "}
+                <Link 
+                  to="/login" 
+                  className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200 hover:underline"
+                >
+                  Sign in here
+                </Link>
+              </p>
+            </motion.div>
+          </Card>
+        </motion.div>
 
         {/* Right Image Section */}
-        <div className="flex justify-center md:justify-end w-full md:w-auto">
-          <img
+        <motion.div 
+          className="w-full lg:w-1/2 flex justify-center lg:justify-end"
+          initial={{ x: 100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <motion.img
             src={Phone}
             alt="Phone Mockup"
-            className="w-64 sm:w-72 md:w-80 lg:w-[400px] max-w-full mt-6 md:mt-0"
+            className="w-80 sm:w-96 lg:w-[500px] max-w-full"
+            animate={{ 
+              y: [0, -10, 0],
+              rotate: [0, 2, 0, -2, 0]
+            }}
+            transition={{ 
+              duration: 6, 
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
           />
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
