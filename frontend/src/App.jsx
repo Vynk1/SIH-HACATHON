@@ -12,6 +12,7 @@ import Events from "./pages/Events";
 import Mentorship from "./pages/Mentorship";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
+import Chatbot from "./component/Chatbot";
 
 function App() {
   return (
@@ -82,6 +83,8 @@ function App() {
             }
           />
         </Routes>
+        {/* Global Chatbot */}
+        <Chatbot />
       </Router>
     </AuthProvider>
   );

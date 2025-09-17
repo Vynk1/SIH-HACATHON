@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import api from "../config/api";
+import { Button, Input, Card, Loading, CardSkeleton } from "../components/ui";
 import {
   FaUser,
   FaUsers,
@@ -15,6 +17,17 @@ import {
   FaPlus,
   FaEye
 } from "react-icons/fa";
+import {
+  UserIcon,
+  UsersIcon,
+  CalendarDaysIcon,
+  CurrencyDollarIcon,
+  HomeIcon,
+  ArrowRightOnRectangleIcon,
+  EyeIcon,
+  PlusIcon,
+  TrashIcon
+} from "@heroicons/react/24/outline";
 import search from "../assets/search.png";
 import avatar1 from "../assets/avatar1.png";
 import image1 from "../assets/image1.jpeg";
@@ -265,82 +278,211 @@ const AdminDashboard = () => {
   };
 
   const renderDashboardTab = () => (
-    <div>
+    <div className="space-y-8">
       {/* Stats Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="bg-[#1f2740] p-5 rounded-lg">
-          <div className="text-sm text-gray-400">Total Alumni</div>
-          <div className="text-2xl font-bold mt-2">{alumni.length}</div>
-        </div>
-        <div className="bg-[#1f2740] p-5 rounded-lg">
-          <div className="text-sm text-gray-400">Total Students</div>
-          <div className="text-2xl font-bold mt-2">{students.length}</div>
-        </div>
-        <div className="bg-[#1f2740] p-5 rounded-lg">
-          <div className="text-sm text-gray-400">Total Events</div>
-          <div className="text-2xl font-bold mt-2">{events.length}</div>
-        </div>
-        <div className="bg-[#1f2740] p-5 rounded-lg">
-          <div className="text-sm text-gray-400">Total Donations</div>
-          <div className="text-2xl font-bold mt-2">${totalDonations.toFixed(2)}</div>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { 
+            title: 'Total Alumni', 
+            value: alumni.length, 
+            icon: UsersIcon, 
+            color: 'from-blue-500 to-blue-600',
+            bgColor: 'bg-blue-500/10'
+          },
+          { 
+            title: 'Total Students', 
+            value: students.length, 
+            icon: UserIcon, 
+            color: 'from-green-500 to-green-600',
+            bgColor: 'bg-green-500/10'
+          },
+          { 
+            title: 'Total Events', 
+            value: events.length, 
+            icon: CalendarDaysIcon, 
+            color: 'from-purple-500 to-purple-600',
+            bgColor: 'bg-purple-500/10'
+          },
+          { 
+            title: 'Total Donations', 
+            value: `$${totalDonations.toFixed(2)}`, 
+            icon: CurrencyDollarIcon, 
+            color: 'from-yellow-500 to-yellow-600',
+            bgColor: 'bg-yellow-500/10'
+          }
+        ].map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <motion.div
+              key={stat.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <Card variant="glass" padding="lg" className="text-center">
+                <div className={`inline-flex items-center justify-center w-12 h-12 ${stat.bgColor} rounded-xl mb-4`}>
+                  <Icon className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-sm text-gray-400 mb-1">{stat.title}</div>
+                <div className={`text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+                  {stat.value}
+                </div>
+                <div className="mt-2 text-xs text-gray-500">
+                  {index === 0 && '+2.5% from last month'}
+                  {index === 1 && '+8.1% from last month'}
+                  {index === 2 && '+12.3% from last month'}
+                  {index === 3 && '+5.7% from last month'}
+                </div>
+              </Card>
+            </motion.div>
+          );
+        })}
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
-        <div className="bg-[#1f2740] rounded-lg p-4">
-          <h3 className="text-lg font-semibold mb-4">Alumni Engagement</h3>
-          <div className="flex items-center justify-center h-64">
-            <img src={image1} alt="Alumni Engagement" className="rounded-lg max-w-full max-h-full object-contain" />
-          </div>
-        </div>
-        <div className="bg-[#1f2740] rounded-lg p-4">
-          <h3 className="text-lg font-semibold mb-4">Event Participation</h3>
-          <div className="flex items-center justify-center h-64">
-            <img src={image2} alt="Event Participation" className="rounded-lg max-w-full max-h-full object-contain" />
-          </div>
-        </div>
-      </div>
+      <motion.div 
+        className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
+        <Card variant="glass" padding="lg">
+          <Card.Header>
+            <Card.Title>Alumni Engagement</Card.Title>
+            <Card.Description>Monthly active alumni statistics</Card.Description>
+          </Card.Header>
+          <Card.Body>
+            <div className="flex items-center justify-center h-64 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl">
+              <motion.img 
+                src={image1} 
+                alt="Alumni Engagement" 
+                className="rounded-lg max-w-full max-h-full object-contain" 
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
+              />
+            </div>
+          </Card.Body>
+        </Card>
+        
+        <Card variant="glass" padding="lg">
+          <Card.Header>
+            <Card.Title>Event Participation</Card.Title>
+            <Card.Description>Event attendance trends</Card.Description>
+          </Card.Header>
+          <Card.Body>
+            <div className="flex items-center justify-center h-64 bg-gradient-to-br from-green-500/10 to-blue-500/10 rounded-xl">
+              <motion.img 
+                src={image2} 
+                alt="Event Participation" 
+                className="rounded-lg max-w-full max-h-full object-contain"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
+              />
+            </div>
+          </Card.Body>
+        </Card>
+      </motion.div>
 
       {/* Recent Activities */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="bg-[#1f2740] p-5 rounded-lg">
-          <h3 className="text-lg font-semibold mb-4">Recent Alumni</h3>
-          <div className="space-y-3">
-            {alumni.slice(0, 5).map((alum, idx) => (
-              <div key={alum._id || idx} className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm font-bold">
-                  {alum.full_name?.charAt(0) || 'A'}
+      <motion.div 
+        className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+      >
+        <Card variant="glass" padding="lg">
+          <Card.Header>
+            <Card.Title className="flex items-center gap-2">
+              <UsersIcon className="w-5 h-5" />
+              Recent Alumni
+            </Card.Title>
+          </Card.Header>
+          <Card.Body>
+            <div className="space-y-4">
+              {alumni.slice(0, 5).map((alum, idx) => (
+                <motion.div 
+                  key={alum._id || idx} 
+                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
+                  whileHover={{ x: 4 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: idx * 0.1 }}
+                >
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-sm font-bold">
+                    {alum.full_name?.charAt(0) || 'A'}
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-medium text-white">{alum.full_name || 'Unknown'}</div>
+                    <div className="text-sm text-gray-400">{alum.email}</div>
+                  </div>
+                  <EyeIcon className="w-4 h-4 text-gray-400 hover:text-white transition-colors" />
+                </motion.div>
+              ))}
+            </div>
+          </Card.Body>
+        </Card>
+        
+        <Card variant="glass" padding="lg">
+          <Card.Header>
+            <Card.Title className="flex items-center gap-2">
+              <CalendarDaysIcon className="w-5 h-5" />
+              Recent Events
+            </Card.Title>
+          </Card.Header>
+          <Card.Body>
+            <div className="space-y-4">
+              {events.slice(0, 5).map((event, idx) => (
+                <motion.div 
+                  key={event._id || idx}
+                  className="p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                  whileHover={{ scale: 1.02 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: idx * 0.1 }}
+                >
+                  <div className="font-medium text-white mb-1">{event.title || 'Untitled Event'}</div>
+                  <div className="text-sm text-gray-400">
+                    {event.date ? new Date(event.date).toLocaleDateString() : 'Date TBD'}
+                  </div>
+                  <div className="text-xs text-blue-400 mt-1">Click to view details</div>
+                </motion.div>
+              ))}
+            </div>
+          </Card.Body>
+        </Card>
+        
+        <Card variant="glass" padding="lg">
+          <Card.Header>
+            <Card.Title className="flex items-center gap-2">
+              <UserIcon className="w-5 h-5" />
+              Mentorship Activity
+            </Card.Title>
+          </Card.Header>
+          <Card.Body>
+            <div className="text-center">
+              <motion.div 
+                className="text-4xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent mb-2"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                {mentorshipRequests.length}
+              </motion.div>
+              <div className="text-sm text-gray-400 mb-4">Pending requests</div>
+              <div className="flex justify-center space-x-4 text-xs">
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span className="text-gray-400">Active</span>
                 </div>
-                <div>
-                  <div className="font-medium">{alum.full_name || 'Unknown'}</div>
-                  <div className="text-sm text-gray-400">{alum.email}</div>
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                  <span className="text-gray-400">Pending</span>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-        
-        <div className="bg-[#1f2740] p-5 rounded-lg">
-          <h3 className="text-lg font-semibold mb-4">Recent Events</h3>
-          <div className="space-y-3">
-            {events.slice(0, 5).map((event, idx) => (
-              <div key={event._id || idx}>
-                <div className="font-medium">{event.title || 'Untitled Event'}</div>
-                <div className="text-sm text-gray-400">
-                  {event.date ? new Date(event.date).toLocaleDateString() : 'Date TBD'}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        
-        <div className="bg-[#1f2740] p-5 rounded-lg">
-          <h3 className="text-lg font-semibold mb-4">Mentorship Requests</h3>
-          <div className="text-2xl font-bold mb-2">{mentorshipRequests.length}</div>
-          <div className="text-sm text-gray-400">Pending requests</div>
-        </div>
-      </div>
+            </div>
+          </Card.Body>
+        </Card>
+      </motion.div>
     </div>
   );
 
@@ -643,36 +785,92 @@ const AdminDashboard = () => {
   );
 
   return (
-    <div className="flex h-screen w-screen bg-[#0f1626] text-white overflow-hidden font-[Poppins]">
+    <motion.div 
+      className="flex h-screen w-screen bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900 text-white overflow-hidden font-[Poppins] relative"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+    >
+      {/* Background Animation */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div 
+          className="absolute top-20 right-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-20 left-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.5, 0.3, 0.5],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 4
+          }}
+        />
+      </div>
+
       {/* Sidebar */}
-      <aside className="w-60 bg-[#1a2236] flex flex-col p-5">
-        <div className="flex items-center gap-2 bg-[#2a324d] px-3 py-2 rounded-md text-gray-400 text-sm">
+      <motion.aside 
+        className="w-60 bg-black/20 backdrop-blur-xl border-r border-white/10 flex flex-col p-5 relative z-10"
+        initial={{ x: -60, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-2 rounded-xl text-gray-300 text-sm border border-white/20">
           <img src={search} alt="Search" className="w-4 h-4" />
-          Search for…
+          <input 
+            type="text" 
+            placeholder="Search..."
+            className="bg-transparent border-none outline-none flex-1 text-white placeholder-gray-400"
+          />
         </div>
 
         <div className="mt-6 space-y-2">
           {[
-            { key: 'dashboard', label: 'Dashboard', icon: FaHome },
-            { key: 'users', label: 'Users', icon: FaUsers },
-            { key: 'events', label: 'Events', icon: FaCalendarAlt },
-            { key: 'donations', label: 'Donations', icon: FaDonate },
-            { key: 'profile', label: 'Profile', icon: FaUser }
-          ].map((item) => {
+            { key: 'dashboard', label: 'Dashboard', icon: HomeIcon },
+            { key: 'users', label: 'Users', icon: UsersIcon },
+            { key: 'events', label: 'Events', icon: CalendarDaysIcon },
+            { key: 'donations', label: 'Donations', icon: CurrencyDollarIcon },
+            { key: 'profile', label: 'Profile', icon: UserIcon }
+          ].map((item, index) => {
             const Icon = item.icon;
             return (
-              <div
+              <motion.div
                 key={item.key}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 onClick={() => setActiveTab(item.key)}
-                className={`flex items-center gap-3 px-3 py-3 rounded-md cursor-pointer text-sm transition ${
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-sm font-medium transition-all duration-300 group ${
                   activeTab === item.key
-                    ? 'bg-[#4A9EE2] text-white'
-                    : 'hover:bg-[#2a324d] text-gray-300 hover:text-white'
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg transform scale-105'
+                    : 'hover:bg-white/10 text-gray-300 hover:text-white hover:transform hover:scale-102'
                 }`}
+                whileHover={{ scale: activeTab === item.key ? 1.05 : 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <Icon className="w-4 h-4" />
-                {item.label}
-              </div>
+                <Icon className="w-5 h-5" />
+                <span>{item.label}</span>
+                {activeTab === item.key && (
+                  <motion.div
+                    className="ml-auto w-2 h-2 bg-white rounded-full"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                )}
+              </motion.div>
             );
           })}
         </div>
@@ -693,41 +891,88 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
-      </aside>
+      </motion.aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-8 overflow-y-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <div className="text-sm text-gray-400">
-            Welcome, {user?.full_name?.split(' ')[0] || 'Admin'}
+      <motion.main 
+        className="flex-1 p-8 overflow-y-auto relative z-10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+      >
+        <motion.div 
+          className="flex items-center justify-between mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+              Admin Dashboard
+            </h1>
+            <p className="text-gray-300 mt-2">Manage your alumni network efficiently</p>
           </div>
-        </div>
+          <Card variant="glass" padding="md" hover={false}>
+            <div className="text-center">
+              <p className="text-sm text-gray-400">Welcome back,</p>
+              <p className="font-semibold text-lg">
+                {user?.full_name?.split(' ')[0] || 'Admin'}
+              </p>
+            </div>
+          </Card>
+        </motion.div>
 
-        {/* Error Message */}
-        {error && (
-          <div className="mb-6 p-4 bg-red-500/20 border border-red-500 text-red-200 rounded-lg">
-            {error}
-          </div>
-        )}
+        {/* Messages */}
+        <AnimatePresence>
+          {error && (
+            <motion.div 
+              className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-xl text-red-200 backdrop-blur-sm"
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                <span>{error}</span>
+              </div>
+            </motion.div>
+          )}
 
-        {/* Success Message */}
-        {success && (
-          <div className="mb-6 p-4 bg-green-500/20 border border-green-500 text-green-200 rounded-lg">
-            {success}
-          </div>
-        )}
+          {success && (
+            <motion.div 
+              className="mb-6 p-4 bg-green-500/20 border border-green-400/50 rounded-xl text-green-200 backdrop-blur-sm"
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span>{success}</span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Loading State */}
         {loading ? (
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
-          </div>
+          <Loading type="spinner" size="lg" color="white" message="Loading dashboard data..." />
         ) : (
-          renderTabContent()
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+          >
+            {renderTabContent()}
+          </motion.div>
         )}
-      </main>
-  </div>
+      </motion.main>
+  </motion.div>
   );
 };
 
