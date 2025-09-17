@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../config/api";
 import { Button, Input, Card, Loading, CardSkeleton } from "../components/ui";
+import AchievementCard from "../components/AchievementCard";
 import {
   FaUser,
   FaBook,
@@ -17,7 +18,10 @@ import {
   FaCalendarAlt,
   FaDonate,
   FaUserGraduate,
-  FaSignOutAlt
+  FaSignOutAlt,
+  FaTrophy,
+  FaPlus,
+  FaTimes
 } from "react-icons/fa";
 import {
   UserIcon,
@@ -58,6 +62,7 @@ const AlumniDashboard = () => {
   const [myDonations, setMyDonations] = useState([]);
   const [mentorshipRequests, setMentorshipRequests] = useState([]);
   const [events, setEvents] = useState([]);
+  const [achievements, setAchievements] = useState([]);
   
   // Loading and form states
   const [loading, setLoading] = useState(true);
@@ -72,6 +77,20 @@ const AlumniDashboard = () => {
     purpose: ''
   });
   const [submittingDonation, setSubmittingDonation] = useState(false);
+  
+  // Achievement form and modal states
+  const [showAchievementModal, setShowAchievementModal] = useState(false);
+  const [editingAchievement, setEditingAchievement] = useState(null);
+  const [achievementForm, setAchievementForm] = useState({
+    title: '',
+    description: '',
+    category: 'award',
+    organization: '',
+    date: '',
+    link: '',
+    imageUrl: ''
+  });
+  const [submittingAchievement, setSubmittingAchievement] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -137,6 +156,16 @@ const AlumniDashboard = () => {
         }
       } catch (err) {
         console.error('Error fetching events:', err);
+      }
+      
+      // Fetch achievements
+      try {
+        const achievementsResponse = await api.getMyAchievements();
+        if (achievementsResponse.success) {
+          setAchievements(achievementsResponse.achievements || []);
+        }
+      } catch (err) {
+        console.error('Error fetching achievements:', err);
       }
       
     } catch (error) {
@@ -251,6 +280,112 @@ const AlumniDashboard = () => {
     }
   };
 
+  // Achievement handlers
+  const handleAchievementChange = (e, field) => {
+    setAchievementForm({ ...achievementForm, [field]: e.target.value });
+    if (error) setError('');
+    if (success) setSuccess('');
+  };
+
+  const handleAchievementSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!achievementForm.title) {
+      setError('Achievement title is required');
+      return;
+    }
+
+    try {
+      setSubmittingAchievement(true);
+      setError('');
+      setSuccess('');
+      
+      const response = editingAchievement 
+        ? await api.updateAchievement(editingAchievement._id, achievementForm)
+        : await api.createAchievement(achievementForm);
+      
+      if (response.success) {
+        setSuccess(editingAchievement ? 'Achievement updated successfully!' : 'Achievement added successfully!');
+        setAchievementForm({
+          title: '',
+          description: '',
+          category: 'award',
+          organization: '',
+          date: '',
+          link: '',
+          imageUrl: ''
+        });
+        setShowAchievementModal(false);
+        setEditingAchievement(null);
+        fetchDashboardData();
+      } else {
+        setError(response.message || 'Failed to save achievement');
+      }
+    } catch (error) {
+      console.error('Error saving achievement:', error);
+      setError(error.message || 'Failed to save achievement');
+    } finally {
+      setSubmittingAchievement(false);
+    }
+  };
+
+  const handleEditAchievement = (achievement) => {
+    setEditingAchievement(achievement);
+    setAchievementForm({
+      title: achievement.title || '',
+      description: achievement.description || '',
+      category: achievement.category || 'award',
+      organization: achievement.organization || '',
+      date: achievement.date ? new Date(achievement.date).toISOString().split('T')[0] : '',
+      link: achievement.link || '',
+      imageUrl: achievement.imageUrl || ''
+    });
+    setShowAchievementModal(true);
+  };
+
+  const handleDeleteAchievement = async (achievementId) => {
+    if (!window.confirm('Are you sure you want to delete this achievement?')) {
+      return;
+    }
+
+    try {
+      const response = await api.deleteAchievement(achievementId);
+      if (response.success) {
+        setSuccess('Achievement deleted successfully!');
+        fetchDashboardData();
+      } else {
+        setError('Failed to delete achievement');
+      }
+    } catch (error) {
+      console.error('Error deleting achievement:', error);
+      setError('Failed to delete achievement');
+    }
+  };
+
+  const handleToggleAchievementVisibility = (achievementId, newVisibility) => {
+    setAchievements(achievements.map(achievement => 
+      achievement._id === achievementId 
+        ? { ...achievement, isVisible: newVisibility }
+        : achievement
+    ));
+  };
+
+  const closeAchievementModal = () => {
+    setShowAchievementModal(false);
+    setEditingAchievement(null);
+    setAchievementForm({
+      title: '',
+      description: '',
+      category: 'award',
+      organization: '',
+      date: '',
+      link: '',
+      imageUrl: ''
+    });
+    setError('');
+    setSuccess('');
+  };
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -339,6 +474,7 @@ const AlumniDashboard = () => {
           {[
             { key: 'dashboard', label: 'Dashboard', icon: HomeIcon },
             { key: 'profile', label: 'Profile', icon: UserIcon },
+            { key: 'achievements', label: 'Achievements', icon: TrophyIcon },
             { key: 'events', label: 'Events', icon: CalendarDaysIcon },
             { key: 'donations', label: 'Donations', icon: CurrencyDollarIcon },
             { key: 'mentorship', label: 'Mentorship', icon: AcademicCapIcon }
@@ -642,6 +778,12 @@ const AlumniDashboard = () => {
                     <div className="grid grid-cols-1 gap-3">
                       {[
                         { 
+                          label: 'My Achievements', 
+                          action: () => handleTabSwitch('achievements'),
+                          color: 'from-yellow-500 to-orange-600',
+                          icon: TrophyIcon
+                        },
+                        { 
                           label: 'View Events', 
                           action: () => handleTabSwitch('events'),
                           color: 'from-blue-500 to-blue-600',
@@ -892,6 +1034,91 @@ const AlumniDashboard = () => {
                   </div>
                 </Card.Body>
               </Card>
+            </motion.div>
+          )}
+          
+          {activeTab === 'achievements' && (
+            <motion.div 
+              className="space-y-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              {/* Header */}
+              <motion.div 
+                className="flex items-center justify-between"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                <div>
+                  <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                    My Achievements
+                  </h2>
+                  <p className="text-gray-400 mt-1">Showcase your professional accomplishments</p>
+                </div>
+                <Button
+                  onClick={() => setShowAchievementModal(true)}
+                  variant="primary"
+                  className="flex items-center gap-2 bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700"
+                >
+                  <FaPlus className="w-4 h-4" />
+                  Add Achievement
+                </Button>
+              </motion.div>
+
+              {/* Achievements Grid */}
+              {achievements.length > 0 ? (
+                <motion.div 
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  {achievements.map((achievement, index) => (
+                    <motion.div
+                      key={achievement._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                    >
+                      <AchievementCard
+                        achievement={achievement}
+                        onUpdate={handleEditAchievement}
+                        onDelete={handleDeleteAchievement}
+                        onToggleVisibility={handleToggleAchievementVisibility}
+                        showActions={true}
+                        isOwner={true}
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div 
+                  className="text-center py-16"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                  <Card variant="glass" padding="xl" className="max-w-md mx-auto">
+                    <div className="space-y-4">
+                      <div className="w-16 h-16 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-full flex items-center justify-center mx-auto">
+                        <FaTrophy className="w-8 h-8 text-yellow-400" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-white">No Achievements Yet</h3>
+                      <p className="text-gray-400 mb-4">Start building your achievement portfolio to inspire others!</p>
+                      <Button
+                        onClick={() => setShowAchievementModal(true)}
+                        variant="primary"
+                        className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700"
+                      >
+                        <FaPlus className="w-4 h-4 mr-2" />
+                        Add Your First Achievement
+                      </Button>
+                    </div>
+                  </Card>
+                </motion.div>
+              )}
             </motion.div>
           )}
           
@@ -1408,6 +1635,171 @@ const AlumniDashboard = () => {
           </motion.div>
         )}
       </motion.main>
+      
+      {/* Achievement Modal */}
+      {showAchievementModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div 
+            className="bg-[#1f2740] rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-white/20"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-white">
+                {editingAchievement ? 'Edit Achievement' : 'Add New Achievement'}
+              </h3>
+              <button
+                onClick={closeAchievementModal}
+                className="text-gray-400 hover:text-white p-1 rounded transition-colors"
+              >
+                <FaTimes className="w-5 h-5" />
+              </button>
+            </div>
+
+            {error && (
+              <div className="mb-4 p-3 bg-red-500/20 border border-red-500 text-red-200 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleAchievementSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Achievement Title *
+                  </label>
+                  <Input
+                    type="text"
+                    value={achievementForm.title}
+                    onChange={(e) => handleAchievementChange(e, 'title')}
+                    placeholder="e.g. Employee of the Year"
+                    required
+                    disabled={submittingAchievement}
+                    className="bg-white/5 border-white/20"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Category
+                  </label>
+                  <select
+                    value={achievementForm.category}
+                    onChange={(e) => handleAchievementChange(e, 'category')}
+                    disabled={submittingAchievement}
+                    className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="award">Award</option>
+                    <option value="publication">Publication</option>
+                    <option value="startup">Startup</option>
+                    <option value="recognition">Recognition</option>
+                    <option value="certification">Certification</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Organization
+                  </label>
+                  <Input
+                    type="text"
+                    value={achievementForm.organization}
+                    onChange={(e) => handleAchievementChange(e, 'organization')}
+                    placeholder="e.g. Google Inc."
+                    disabled={submittingAchievement}
+                    className="bg-white/5 border-white/20"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Date
+                  </label>
+                  <Input
+                    type="date"
+                    value={achievementForm.date}
+                    onChange={(e) => handleAchievementChange(e, 'date')}
+                    disabled={submittingAchievement}
+                    className="bg-white/5 border-white/20"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Description
+                </label>
+                <textarea
+                  value={achievementForm.description}
+                  onChange={(e) => handleAchievementChange(e, 'description')}
+                  rows={4}
+                  className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  placeholder="Brief description of your achievement..."
+                  disabled={submittingAchievement}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Link (Optional)
+                  </label>
+                  <Input
+                    type="url"
+                    value={achievementForm.link}
+                    onChange={(e) => handleAchievementChange(e, 'link')}
+                    placeholder="https://..."
+                    disabled={submittingAchievement}
+                    className="bg-white/5 border-white/20"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Image URL (Optional)
+                  </label>
+                  <Input
+                    type="url"
+                    value={achievementForm.imageUrl}
+                    onChange={(e) => handleAchievementChange(e, 'imageUrl')}
+                    placeholder="https://..."
+                    disabled={submittingAchievement}
+                    className="bg-white/5 border-white/20"
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button
+                  type="submit"
+                  disabled={submittingAchievement}
+                  variant="primary"
+                  className="flex items-center gap-2 bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700"
+                >
+                  {submittingAchievement ? (
+                    <Loading type="spinner" size="sm" color="white" />
+                  ) : (
+                    <FaTrophy className="w-4 h-4" />
+                  )}
+                  {submittingAchievement ? 'Saving...' : (editingAchievement ? 'Update Achievement' : 'Add Achievement')}
+                </Button>
+                <Button
+                  type="button"
+                  onClick={closeAchievementModal}
+                  variant="secondary"
+                  disabled={submittingAchievement}
+                  className="bg-gray-600 hover:bg-gray-700 text-white"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
     </motion.div>
   );
 };

@@ -14,6 +14,8 @@ const studentsRouter = require("./routes/students.route");
 const eventRouter = require("./routes/event.route");
 const donationRouter = require("./routes/donation.route");
 const mentorRouter = require("./routes/mentor.route");
+const jobRouter = require("./routes/job.route");
+const achievementRouter = require("./routes/achievement.route");
 
 const app = express();
 
@@ -52,6 +54,8 @@ app.use("/students", studentsRouter);
 app.use("/events", eventRouter);
 app.use("/donations", donationRouter);
 app.use("/mentorships", mentorRouter);
+app.use("/jobs", jobRouter);
+app.use("/achievements", achievementRouter);
 
 const PORT = process.env.PORT || 3000;
 mongoose
