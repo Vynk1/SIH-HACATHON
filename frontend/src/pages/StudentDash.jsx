@@ -19,10 +19,12 @@ import {
   FaHandshake,
   FaPaperPlane,
   FaClock,
-  FaCheckCircle
+  FaCheckCircle,
+  FaBriefcase
 } from "react-icons/fa";
 import search2 from "../assets/search copy.png";
 import profilePic from "../assets/pfp.png";
+import JobCard from "../components/JobCard";
 
 const StudentDashboard = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -45,6 +47,7 @@ const StudentDashboard = () => {
   const [availableMentors, setAvailableMentors] = useState([]);
   const [myMentorshipRequests, setMyMentorshipRequests] = useState([]);
   const [events, setEvents] = useState([]);
+  const [availableJobs, setAvailableJobs] = useState([]);
   
   // Loading and form states
   const [loading, setLoading] = useState(true);
@@ -127,6 +130,16 @@ const StudentDashboard = () => {
         }
       } catch (err) {
         console.error('Error fetching events:', err);
+      }
+      
+      // Fetch available jobs
+      try {
+        const jobsResponse = await api.getJobs();
+        if (jobsResponse.success) {
+          setAvailableJobs(jobsResponse.jobs || []);
+        }
+      } catch (err) {
+        console.error('Error fetching jobs:', err);
       }
       
     } catch (error) {
@@ -223,6 +236,8 @@ const StudentDashboard = () => {
         return renderMentorsTab();
       case 'requests':
         return renderRequestsTab();
+      case 'jobs':
+        return renderJobsTab();
       case 'events':
         return renderEventsTab();
       case 'profile':
@@ -251,8 +266,8 @@ const StudentDashboard = () => {
           </div>
         </div>
         <div className="bg-[#1f2740] p-5 rounded-lg">
-          <div className="text-sm text-gray-400">Upcoming Events</div>
-          <div className="text-2xl font-bold mt-2">{events.length}</div>
+          <div className="text-sm text-gray-400">Available Jobs</div>
+          <div className="text-2xl font-bold mt-2">{availableJobs.length}</div>
         </div>
       </div>
 
@@ -287,6 +302,12 @@ const StudentDashboard = () => {
           >
             View All Mentors
           </button>
+          <button
+            onClick={() => setActiveTab('jobs')}
+            className="mt-2 w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded transition"
+          >
+            Browse Jobs
+          </button>
         </div>
         
         {/* My Recent Requests */}
@@ -319,6 +340,12 @@ const StudentDashboard = () => {
             className="mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded transition"
           >
             View All Requests
+          </button>
+          <button
+            onClick={() => navigate('/hall-of-fame')}
+            className="mt-2 w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded transition"
+          >
+            Hall of Fame
           </button>
         </div>
       </div>
@@ -540,6 +567,33 @@ const StudentDashboard = () => {
             <p className="text-gray-400 text-center py-8">You haven't sent any mentorship requests yet.</p>
           )}
         </div>
+      </div>
+    </div>
+  );
+
+  const renderJobsTab = () => (
+    <div>
+      <div className="bg-[#1f2740] p-6 rounded-lg">
+        <h3 className="text-xl font-semibold mb-4">Available Jobs ({availableJobs.length})</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {availableJobs.map((job) => (
+            <JobCard
+              key={job._id}
+              job={job}
+              showActions={true}
+              isOwner={false}
+            />
+          ))}
+        </div>
+        {availableJobs.length === 0 && (
+          <div className="text-center py-12">
+            <FaBriefcase className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-400 mb-2">No jobs available</h3>
+            <p className="text-gray-500">
+              Check back later for new job opportunities from our alumni network!
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -797,6 +851,7 @@ const StudentDashboard = () => {
             { key: 'dashboard', label: 'Dashboard', icon: FaHome },
             { key: 'mentors', label: 'Find Mentors', icon: FaUserGraduate },
             { key: 'requests', label: 'My Requests', icon: FaHandshake },
+            { key: 'jobs', label: 'Job Board', icon: FaBriefcase },
             { key: 'events', label: 'Events', icon: FaCalendarAlt },
             { key: 'profile', label: 'Profile', icon: FaUser }
           ].map((item) => {

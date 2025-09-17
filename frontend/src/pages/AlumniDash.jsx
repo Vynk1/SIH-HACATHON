@@ -15,10 +15,16 @@ import {
   FaCalendarAlt,
   FaDonate,
   FaUserGraduate,
-  FaSignOutAlt
+  FaSignOutAlt,
+  FaTrophy,
+  FaPlus,
+  FaTimes,
+  FaBriefcase
 } from "react-icons/fa";
 import search2 from "../assets/search copy.png";
 import profilePic from "../assets/pfp.png";
+import AchievementCard from "../components/AchievementCard";
+import JobCard from "../components/JobCard";
 
 const AlumniDashboard = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -41,6 +47,8 @@ const AlumniDashboard = () => {
   const [myDonations, setMyDonations] = useState([]);
   const [mentorshipRequests, setMentorshipRequests] = useState([]);
   const [events, setEvents] = useState([]);
+  const [achievements, setAchievements] = useState([]);
+  const [myJobs, setMyJobs] = useState([]);
   
   // Loading and form states
   const [loading, setLoading] = useState(true);
@@ -55,6 +63,35 @@ const AlumniDashboard = () => {
     purpose: ''
   });
   const [submittingDonation, setSubmittingDonation] = useState(false);
+  
+  // Achievement form
+  const [achievementForm, setAchievementForm] = useState({
+    title: '',
+    description: '',
+    category: 'other',
+    organization: '',
+    date: '',
+    link: '',
+    imageUrl: ''
+  });
+  const [submittingAchievement, setSubmittingAchievement] = useState(false);
+  const [showAchievementModal, setShowAchievementModal] = useState(false);
+  const [editingAchievement, setEditingAchievement] = useState(null);
+  
+  // Job posting form
+  const [jobForm, setJobForm] = useState({
+    title: '',
+    company: '',
+    location: '',
+    applyLink: '',
+    description: '',
+    jobType: 'full-time',
+    experience: '',
+    salary: ''
+  });
+  const [submittingJob, setSubmittingJob] = useState(false);
+  const [showJobModal, setShowJobModal] = useState(false);
+  const [editingJob, setEditingJob] = useState(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -120,6 +157,26 @@ const AlumniDashboard = () => {
         }
       } catch (err) {
         console.error('Error fetching events:', err);
+      }
+      
+      // Fetch achievements
+      try {
+        const achievementsResponse = await api.getMyAchievements();
+        if (achievementsResponse.success) {
+          setAchievements(achievementsResponse.achievements || []);
+        }
+      } catch (err) {
+        console.error('Error fetching achievements:', err);
+      }
+      
+      // Fetch my job postings
+      try {
+        const jobsResponse = await api.getMyJobs();
+        if (jobsResponse.success) {
+          setMyJobs(jobsResponse.jobs || []);
+        }
+      } catch (err) {
+        console.error('Error fetching jobs:', err);
       }
       
     } catch (error) {
@@ -233,6 +290,165 @@ const AlumniDashboard = () => {
       setError(error.message || 'Failed to update request status');
     }
   };
+  
+  // Achievement handlers
+  const handleAchievementChange = (e, field) => {
+    setAchievementForm({ ...achievementForm, [field]: e.target.value });
+    if (error) setError('');
+    if (success) setSuccess('');
+  };
+  
+  const handleAchievementSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setSubmittingAchievement(true);
+      setError('');
+      setSuccess('');
+      
+      const response = editingAchievement 
+        ? await api.updateAchievement(editingAchievement._id, achievementForm)
+        : await api.createAchievement(achievementForm);
+      
+      if (response.success) {
+        setSuccess(editingAchievement ? 'Achievement updated successfully!' : 'Achievement added successfully!');
+        setAchievementForm({
+          title: '',
+          description: '',
+          category: 'other',
+          organization: '',
+          date: '',
+          link: '',
+          imageUrl: ''
+        });
+        setShowAchievementModal(false);
+        setEditingAchievement(null);
+        fetchDashboardData();
+      } else {
+        setError(response.message || 'Failed to save achievement');
+      }
+    } catch (error) {
+      console.error('Error saving achievement:', error);
+      setError(error.message || 'Failed to save achievement');
+    } finally {
+      setSubmittingAchievement(false);
+    }
+  };
+  
+  const handleAchievementEdit = (achievement) => {
+    setEditingAchievement(achievement);
+    setAchievementForm({
+      title: achievement.title || '',
+      description: achievement.description || '',
+      category: achievement.category || 'other',
+      organization: achievement.organization || '',
+      date: achievement.date ? new Date(achievement.date).toISOString().split('T')[0] : '',
+      link: achievement.link || '',
+      imageUrl: achievement.imageUrl || ''
+    });
+    setShowAchievementModal(true);
+  };
+  
+  const handleAchievementDelete = async (achievementId) => {
+    try {
+      const response = await api.deleteAchievement(achievementId);
+      if (response.success) {
+        setSuccess('Achievement deleted successfully!');
+        fetchDashboardData();
+      } else {
+        setError('Failed to delete achievement');
+      }
+    } catch (error) {
+      console.error('Error deleting achievement:', error);
+      setError('Failed to delete achievement');
+    }
+  };
+  
+  const handleAchievementVisibilityToggle = (achievementId, newVisibility) => {
+    setAchievements(prev => prev.map(ach => 
+      ach._id === achievementId ? { ...ach, isVisible: newVisibility } : ach
+    ));
+  };
+  
+  // Job handlers
+  const handleJobChange = (e, field) => {
+    setJobForm({ ...jobForm, [field]: e.target.value });
+    if (error) setError('');
+    if (success) setSuccess('');
+  };
+  
+  const handleJobSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Validate required fields
+    if (!jobForm.title || !jobForm.company || !jobForm.location || !jobForm.applyLink) {
+      setError('Please fill in all required fields (Title, Company, Location, and Application Link)');
+      return;
+    }
+    
+    try {
+      setSubmittingJob(true);
+      setError('');
+      setSuccess('');
+      
+      const response = editingJob 
+        ? await api.updateJob(editingJob._id, jobForm)
+        : await api.createJob(jobForm);
+      
+      if (response.success) {
+        setSuccess(editingJob ? 'Job updated successfully!' : 'Job posted successfully!');
+        setJobForm({
+          title: '',
+          company: '',
+          location: '',
+          applyLink: '',
+          description: '',
+          jobType: 'full-time',
+          experience: '',
+          salary: ''
+        });
+        setShowJobModal(false);
+        setEditingJob(null);
+        fetchDashboardData();
+      } else {
+        setError(response.message || 'Failed to save job');
+      }
+    } catch (error) {
+      console.error('Error saving job:', error);
+      setError(error.message || 'Failed to save job');
+    } finally {
+      setSubmittingJob(false);
+    }
+  };
+  
+  const handleJobEdit = (job) => {
+    setEditingJob(job);
+    setJobForm({
+      title: job.title || '',
+      company: job.company || '',
+      location: job.location || '',
+      applyLink: job.applyLink || '',
+      description: job.description || '',
+      jobType: job.jobType || 'full-time',
+      experience: job.experience || '',
+      salary: job.salary || ''
+    });
+    setShowJobModal(true);
+  };
+  
+  const handleJobDelete = async (jobId) => {
+    try {
+      const response = await api.deleteJob(jobId);
+      if (response.success) {
+        setSuccess('Job deleted successfully!');
+        fetchDashboardData();
+      } else {
+        setError('Failed to delete job');
+      }
+    } catch (error) {
+      console.error('Error deleting job:', error);
+      setError('Failed to delete job');
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -283,6 +499,8 @@ const AlumniDashboard = () => {
         {[
           { name: "Dashboard", key: "dashboard", icon: <FaHome className="w-4 h-4" /> },
           { name: "Profile", key: "profile", icon: <FaUser className="w-4 h-4" /> },
+          { name: "Achievements", key: "achievements", icon: <FaTrophy className="w-4 h-4" /> },
+          { name: "Jobs", key: "jobs", icon: <FaBriefcase className="w-4 h-4" /> },
           { name: "Events", key: "events", icon: <FaCalendarAlt className="w-4 h-4" /> },
           { name: "Donations", key: "donations", icon: <FaDonate className="w-4 h-4" /> },
           { name: "Mentorship", key: "mentorship", icon: <FaUserGraduate className="w-4 h-4" /> }
@@ -371,7 +589,8 @@ const AlumniDashboard = () => {
                   <h3 className="text-xl mb-3 text-[#4A9EE2]">My Stats</h3>
                   <div className="space-y-2">
                     <p className="text-sm">Total Donations: ${totalDonated.toFixed(2)}</p>
-                    <p className="text-sm">Events Available: {events.length}</p>
+                    <p className="text-sm">My Achievements: {achievements.length}</p>
+                    <p className="text-sm">Jobs Posted: {myJobs.length}</p>
                     <p className="text-sm">Mentorship Requests: {mentorshipRequests.length}</p>
                   </div>
                 </div>
@@ -396,6 +615,18 @@ const AlumniDashboard = () => {
                   <h3 className="text-xl mb-3 text-[#4A9EE2]">Quick Actions</h3>
                   <div className="space-y-2">
                     <button 
+                      onClick={() => setShowAchievementModal(true)}
+                      className="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-2 rounded transition text-sm"
+                    >
+                      Add Achievement
+                    </button>
+                    <button 
+                      onClick={() => setShowJobModal(true)}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded transition text-sm"
+                    >
+                      Post Job
+                    </button>
+                    <button 
                       onClick={() => handleTabSwitch('events')}
                       className="w-full bg-[#478093] hover:bg-[#356a7a] text-white py-2 rounded transition text-sm"
                     >
@@ -406,6 +637,18 @@ const AlumniDashboard = () => {
                       className="w-full bg-[#4A9EE2] hover:bg-[#357eb5] text-white py-2 rounded transition text-sm"
                     >
                       Make Donation
+                    </button>
+                    <button 
+                      onClick={() => navigate('/jobs')}
+                      className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded transition text-sm"
+                    >
+                      View All Jobs
+                    </button>
+                    <button 
+                      onClick={() => navigate('/hall-of-fame')}
+                      className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded transition text-sm"
+                    >
+                      Hall of Fame
                     </button>
                     <button 
                       onClick={() => handleTabSwitch('mentorship')}
@@ -757,6 +1000,444 @@ const AlumniDashboard = () => {
               )}
             </div>
           )}
+          
+          {activeTab === 'achievements' && (
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-semibold">My Achievements</h2>
+                <button
+                  onClick={() => setShowAchievementModal(true)}
+                  className="flex items-center gap-2 px-6 py-3 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition"
+                >
+                  <FaPlus className="w-4 h-4" />
+                  Add Achievement
+                </button>
+              </div>
+              
+              {achievements.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {achievements.map((achievement) => (
+                    <AchievementCard
+                      key={achievement._id}
+                      achievement={achievement}
+                      showActions={true}
+                      isOwner={true}
+                      onUpdate={handleAchievementEdit}
+                      onDelete={handleAchievementDelete}
+                      onToggleVisibility={handleAchievementVisibilityToggle}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 bg-[#2a324d] rounded-lg">
+                  <FaTrophy className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-gray-400 mb-2">No achievements yet</h3>
+                  <p className="text-gray-500 mb-6">
+                    Share your accomplishments with the alumni community!
+                  </p>
+                  <button
+                    onClick={() => setShowAchievementModal(true)}
+                    className="px-6 py-3 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition"
+                  >
+                    Add Your First Achievement
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {activeTab === 'jobs' && (
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-semibold">My Job Postings</h2>
+                <button
+                  onClick={() => setShowJobModal(true)}
+                  className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+                >
+                  <FaPlus className="w-4 h-4" />
+                  Post Job
+                </button>
+              </div>
+              
+              {myJobs.length > 0 ? (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {myJobs.map((job) => (
+                    <JobCard
+                      key={job._id}
+                      job={job}
+                      showActions={true}
+                      isOwner={true}
+                      onUpdate={handleJobEdit}
+                      onDelete={handleJobDelete}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 bg-[#2a324d] rounded-lg">
+                  <FaBriefcase className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-gray-400 mb-2">No job postings yet</h3>
+                  <p className="text-gray-500 mb-6">
+                    Help students and fellow alumni by posting job opportunities!
+                  </p>
+                  <button
+                    onClick={() => setShowJobModal(true)}
+                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+                  >
+                    Post Your First Job
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+      
+      {/* Achievement Modal */}
+      {showAchievementModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-[#1f2740] rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-white">
+                {editingAchievement ? 'Edit Achievement' : 'Add New Achievement'}
+              </h3>
+              <button
+                onClick={() => {
+                  setShowAchievementModal(false);
+                  setEditingAchievement(null);
+                  setAchievementForm({
+                    title: '',
+                    description: '',
+                    category: 'other',
+                    organization: '',
+                    date: '',
+                    link: '',
+                    imageUrl: ''
+                  });
+                }}
+                className="text-gray-400 hover:text-white p-1 rounded"
+              >
+                <FaTimes className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleAchievementSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Title *
+                </label>
+                <input
+                  type="text"
+                  value={achievementForm.title}
+                  onChange={(e) => handleAchievementChange(e, 'title')}
+                  className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  placeholder="Achievement title"
+                  required
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Category
+                  </label>
+                  <select
+                    value={achievementForm.category}
+                    onChange={(e) => handleAchievementChange(e, 'category')}
+                    className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  >
+                    <option value="award">Award</option>
+                    <option value="publication">Publication</option>
+                    <option value="startup">Startup</option>
+                    <option value="recognition">Recognition</option>
+                    <option value="certification">Certification</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Date
+                  </label>
+                  <input
+                    type="date"
+                    value={achievementForm.date}
+                    onChange={(e) => handleAchievementChange(e, 'date')}
+                    className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Organization/Institution
+                </label>
+                <input
+                  type="text"
+                  value={achievementForm.organization}
+                  onChange={(e) => handleAchievementChange(e, 'organization')}
+                  className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  placeholder="Organization or institution name"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Description
+                </label>
+                <textarea
+                  value={achievementForm.description}
+                  onChange={(e) => handleAchievementChange(e, 'description')}
+                  rows={4}
+                  className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 resize-none"
+                  placeholder="Describe your achievement..."
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Link (optional)
+                </label>
+                <input
+                  type="url"
+                  value={achievementForm.link}
+                  onChange={(e) => handleAchievementChange(e, 'link')}
+                  className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  placeholder="https://example.com"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Image URL (optional)
+                </label>
+                <input
+                  type="url"
+                  value={achievementForm.imageUrl}
+                  onChange={(e) => handleAchievementChange(e, 'imageUrl')}
+                  className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  placeholder="https://example.com/image.jpg"
+                />
+              </div>
+              
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="submit"
+                  disabled={submittingAchievement}
+                  className="flex items-center gap-2 px-6 py-3 bg-yellow-600 hover:bg-yellow-700 disabled:opacity-50 text-white rounded-lg transition"
+                >
+                  <FaSave className="w-4 h-4" />
+                  {submittingAchievement ? 'Saving...' : (editingAchievement ? 'Update Achievement' : 'Add Achievement')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAchievementModal(false);
+                    setEditingAchievement(null);
+                    setAchievementForm({
+                      title: '',
+                      description: '',
+                      category: 'other',
+                      organization: '',
+                      date: '',
+                      link: '',
+                      imageUrl: ''
+                    });
+                  }}
+                  className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      
+      {/* Job Modal */}
+      {showJobModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-[#1f2740] rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-white">
+                {editingJob ? 'Edit Job Posting' : 'Post New Job'}
+              </h3>
+              <button
+                onClick={() => {
+                  setShowJobModal(false);
+                  setEditingJob(null);
+                  setJobForm({
+                    title: '',
+                    company: '',
+                    location: '',
+                    applyLink: '',
+                    description: '',
+                    jobType: 'full-time',
+                    experience: '',
+                    salary: ''
+                  });
+                }}
+                className="text-gray-400 hover:text-white p-1 rounded"
+              >
+                <FaTimes className="w-5 h-5" />
+              </button>
+            </div>
+            
+            {error && (
+              <div className="mb-4 p-3 bg-red-500/20 border border-red-500 text-red-200 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+            
+            <form onSubmit={handleJobSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Job Title *
+                  </label>
+                  <input
+                    type="text"
+                    value={jobForm.title}
+                    onChange={(e) => handleJobChange(e, 'title')}
+                    className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g. Software Engineer"
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Company *
+                  </label>
+                  <input
+                    type="text"
+                    value={jobForm.company}
+                    onChange={(e) => handleJobChange(e, 'company')}
+                    className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g. Tech Corp"
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Location *
+                  </label>
+                  <input
+                    type="text"
+                    value={jobForm.location}
+                    onChange={(e) => handleJobChange(e, 'location')}
+                    className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g. New York, NY or Remote"
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Job Type
+                  </label>
+                  <select
+                    value={jobForm.jobType}
+                    onChange={(e) => handleJobChange(e, 'jobType')}
+                    className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="full-time">Full Time</option>
+                    <option value="part-time">Part Time</option>
+                    <option value="internship">Internship</option>
+                    <option value="contract">Contract</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Experience Level
+                  </label>
+                  <input
+                    type="text"
+                    value={jobForm.experience}
+                    onChange={(e) => handleJobChange(e, 'experience')}
+                    className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g. 2-3 years, Entry Level"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Salary Range
+                  </label>
+                  <input
+                    type="text"
+                    value={jobForm.salary}
+                    onChange={(e) => handleJobChange(e, 'salary')}
+                    className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g. $80k-$120k, Competitive"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Application Link *
+                </label>
+                <input
+                  type="url"
+                  value={jobForm.applyLink}
+                  onChange={(e) => handleJobChange(e, 'applyLink')}
+                  className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="https://company.com/apply"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Job Description
+                </label>
+                <textarea
+                  value={jobForm.description}
+                  onChange={(e) => handleJobChange(e, 'description')}
+                  rows={4}
+                  className="w-full bg-[#2a324d] px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  placeholder="Brief description of the role and requirements..."
+                />
+              </div>
+              
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="submit"
+                  disabled={submittingJob}
+                  className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-lg transition"
+                >
+                  <FaSave className="w-4 h-4" />
+                  {submittingJob ? 'Saving...' : (editingJob ? 'Update Job' : 'Post Job')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowJobModal(false);
+                    setEditingJob(null);
+                    setJobForm({
+                      title: '',
+                      company: '',
+                      location: '',
+                      applyLink: '',
+                      description: '',
+                      jobType: 'full-time',
+                      experience: '',
+                      salary: ''
+                    });
+                  }}
+                  className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </main>

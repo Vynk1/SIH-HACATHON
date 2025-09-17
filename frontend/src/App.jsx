@@ -10,6 +10,8 @@ import LandingPage from "./pages/LandingPage";
 import Donation from "./pages/Donation";
 import Events from "./pages/Events";
 import Mentorship from "./pages/Mentorship";
+import JobsBoard from "./pages/JobsBoard";
+import HallOfFame from "./pages/HallOfFame";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -78,6 +80,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Mentorship />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/jobs"
+            element={
+              <ProtectedRoute>
+                <JobsBoard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/hall-of-fame"
+            element={
+              <ProtectedRoute>
+                <HallOfFame />
               </ProtectedRoute>
             }
           />

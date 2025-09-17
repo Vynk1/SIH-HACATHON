@@ -37,7 +37,25 @@ export const API_ENDPOINTS = {
   MENTORSHIPS_MY_REQUESTS: '/mentorships/my-requests',
   MENTORSHIPS_ALL: '/mentorships/all',
   MENTORSHIPS_AVAILABLE_MENTORS: '/mentorships/available-mentors',
-  MENTORSHIPS_STATUS: (id) => `/mentorships/${id}/status`
+  MENTORSHIPS_STATUS: (id) => `/mentorships/${id}/status`,
+  
+  // Job endpoints
+  JOBS: '/jobs',
+  JOBS_CREATE: '/jobs',
+  JOBS_MY: '/jobs/my/jobs',
+  JOBS_DETAIL: (id) => `/jobs/${id}`,
+  JOBS_APPLY: (id) => `/jobs/${id}/apply`,
+  JOBS_UPDATE: (id) => `/jobs/${id}`,
+  JOBS_DELETE: (id) => `/jobs/${id}`,
+  
+  // Achievement endpoints
+  ACHIEVEMENTS: '/achievements',
+  ACHIEVEMENTS_CREATE: '/achievements',
+  ACHIEVEMENTS_MY: '/achievements/my/achievements',
+  ACHIEVEMENTS_USER: (userId) => `/achievements/user/${userId}`,
+  ACHIEVEMENTS_UPDATE: (id) => `/achievements/${id}`,
+  ACHIEVEMENTS_DELETE: (id) => `/achievements/${id}`,
+  ACHIEVEMENTS_TOGGLE_VISIBILITY: (id) => `/achievements/${id}/visibility`
 };
 
 // Create full URL for an endpoint
@@ -84,15 +102,38 @@ export const apiRequest = async (endpoint, options = {}) => {
 
   try {
     const response = await fetch(url, config);
-    const data = await response.json();
     
-    if (!response.ok) {
-      throw new Error(data.message || 'API request failed');
+    // Check if response is JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'API request failed');
+      }
+      
+      return data;
+    } else {
+      // Handle non-JSON responses (like HTML error pages)
+      const text = await response.text();
+      console.error('Non-JSON response:', text);
+      
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error(`API endpoint not found: ${url}`);
+        } else if (response.status >= 500) {
+          throw new Error('Server error - please check if the backend is running');
+        } else {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+      }
+      
+      throw new Error('Server returned non-JSON response');
     }
-    
-    return data;
   } catch (error) {
     console.error('API Request Error:', error);
+    console.error('Request URL:', url);
+    console.error('Request Config:', config);
     throw error;
   }
 };
@@ -245,6 +286,86 @@ export const api = {
     apiRequest(API_ENDPOINTS.MENTORSHIPS_STATUS(mentorshipId), {
       method: 'PATCH',
       body: JSON.stringify(statusData)
+    }),
+    
+  // Job methods
+  getJobs: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return apiRequest(`${API_ENDPOINTS.JOBS}${queryString ? '?' + queryString : ''}`, {
+      method: 'GET'
+    });
+  },
+  
+  getJobById: (jobId) =>
+    apiRequest(API_ENDPOINTS.JOBS_DETAIL(jobId), {
+      method: 'GET'
+    }),
+    
+  createJob: (jobData) =>
+    apiRequest(API_ENDPOINTS.JOBS_CREATE, {
+      method: 'POST',
+      body: JSON.stringify(jobData)
+    }),
+    
+  getMyJobs: () =>
+    apiRequest(API_ENDPOINTS.JOBS_MY, {
+      method: 'GET'
+    }),
+    
+  updateJob: (jobId, jobData) =>
+    apiRequest(API_ENDPOINTS.JOBS_UPDATE(jobId), {
+      method: 'PUT',
+      body: JSON.stringify(jobData)
+    }),
+    
+  deleteJob: (jobId) =>
+    apiRequest(API_ENDPOINTS.JOBS_DELETE(jobId), {
+      method: 'DELETE'
+    }),
+    
+  applyForJob: (jobId) =>
+    apiRequest(API_ENDPOINTS.JOBS_APPLY(jobId), {
+      method: 'POST'
+    }),
+    
+  // Achievement methods
+  getAchievements: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return apiRequest(`${API_ENDPOINTS.ACHIEVEMENTS}${queryString ? '?' + queryString : ''}`, {
+      method: 'GET'
+    });
+  },
+  
+  getAchievementsByUserId: (userId) =>
+    apiRequest(API_ENDPOINTS.ACHIEVEMENTS_USER(userId), {
+      method: 'GET'
+    }),
+    
+  createAchievement: (achievementData) =>
+    apiRequest(API_ENDPOINTS.ACHIEVEMENTS_CREATE, {
+      method: 'POST',
+      body: JSON.stringify(achievementData)
+    }),
+    
+  getMyAchievements: () =>
+    apiRequest(API_ENDPOINTS.ACHIEVEMENTS_MY, {
+      method: 'GET'
+    }),
+    
+  updateAchievement: (achievementId, achievementData) =>
+    apiRequest(API_ENDPOINTS.ACHIEVEMENTS_UPDATE(achievementId), {
+      method: 'PUT',
+      body: JSON.stringify(achievementData)
+    }),
+    
+  deleteAchievement: (achievementId) =>
+    apiRequest(API_ENDPOINTS.ACHIEVEMENTS_DELETE(achievementId), {
+      method: 'DELETE'
+    }),
+    
+  toggleAchievementVisibility: (achievementId) =>
+    apiRequest(API_ENDPOINTS.ACHIEVEMENTS_TOGGLE_VISIBILITY(achievementId), {
+      method: 'PATCH'
     })
 };
 
